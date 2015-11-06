@@ -26,7 +26,7 @@ class DevelopmentConfig(BaseConfig):
 
 class TestingConfig(BaseConfig):
     """Testing configuration."""
-    DEBUG = True
+    DEBUG = False
     TESTING = True
     BCRYPT_LOG_ROUNDS = 1
     WTF_CSRF_ENABLED = False

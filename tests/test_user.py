@@ -24,7 +24,7 @@ class TestUserBlueprint(BaseTestCase):
             )
             self.assertIn(b'Welcome', response.data)
             self.assertIn(b'Logout', response.data)
-            self.assertIn(b'Members', response.data)
+            self.assertIn(b'Students', response.data)
             self.assertTrue(current_user.email == "ad@min.com")
             self.assertTrue(current_user.is_active())
             self.assertEqual(response.status_code, 200)
@@ -39,7 +39,7 @@ class TestUserBlueprint(BaseTestCase):
             )
             response = self.client.get('/logout', follow_redirects=True)
             self.assertIn(b'You were logged out. Bye!', response.data)
-            self.assertFalse(current_user.is_active())
+            self.assertFalse(current_user.is_active)
 
     def test_logout_route_requires_login(self):
         # Ensure logout route requres logged in user.
@@ -97,18 +97,26 @@ class TestUserBlueprint(BaseTestCase):
         response = self.client.get('/register', follow_redirects=True)
         self.assertIn(b'<h1>Please Register</h1>\n', response.data)
 
-    def test_user_registration(self):
-        # Ensure registration behaves correctlys.
+    def test_student_registration(self):
+        # Ensure registration behaves correctls.
         with self.client:
             response = self.client.post(
                 '/register',
-                data=dict(email="test@tester.com", password="testing",
-                          confirm="testing"),
+                data=dict(
+                    email="test@tester.com",
+                    password="testing",
+                    confirm="testing"
+                ),
                 follow_redirects=True
             )
-            self.assertIn(b'Welcome', response.data)
+            self.assertIn(b'Hi', response.data)
             self.assertTrue(current_user.email == "test@tester.com")
+            self.assertTrue(current_user.is_authenticated())
             self.assertTrue(current_user.is_active())
+            self.assertFalse(current_user.is_anonymous())
+            self.assertTrue(current_user.is_student())
+            self.assertFalse(current_user.is_teacher())
+            self.assertFalse(current_user.is_admin())
             self.assertEqual(response.status_code, 200)
 
 

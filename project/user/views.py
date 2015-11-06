@@ -65,3 +65,8 @@ def logout():
     logout_user()
     flash('You were logged out. Bye!', 'success')
     return redirect(url_for('main.home'))
+
+@user_blueprint.route('/members')
+@login_required
+def members():
+    return render_template('user/members.html')
