@@ -7,7 +7,7 @@ import unittest
 from flask.ext.login import current_user
 
 from base import BaseTestCase
-from project import bcrypt
+from project import bcrypt_hash
 from project.models import User
 from project.user.forms import LoginForm
 
@@ -81,8 +81,10 @@ class TestUserBlueprint(BaseTestCase):
     def test_check_password(self):
         # Ensure given password is correct after unhashing.
         user = User.query.filter_by(email='ad@min.com').first()
-        self.assertTrue(bcrypt.check_password_hash(user.password, 'admin_user'))
-        self.assertFalse(bcrypt.check_password_hash(user.password, 'foobar'))
+        self.assertTrue(
+            bcrypt_hash.check_password_hash(user.password, 'admin_user'))
+        self.assertFalse(
+            bcrypt_hash.check_password_hash(user.password, 'foobar'))
 
     def test_validate_invalid_password(self):
         # Ensure user can't login when the pasword is incorrect.
