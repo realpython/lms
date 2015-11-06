@@ -2,6 +2,8 @@
 
 Just a basic LMS...
 
+[![Build Status](https://travis-ci.org/realpython/lms.svg?branch=master)](https://travis-ci.org/realpython/lms)
+
 ## Quick Start
 
 ### Basics
