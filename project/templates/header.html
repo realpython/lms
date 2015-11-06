@@ -15,12 +15,14 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          {% if current_user.is_student %}
-            <li><a href="{{ url_for('student.student_home') }}">Dashboard</a></li>
-          {% elif current_user.is_teacher %}
-            <li><a href="{{ url_for('teacher.teacher_home') }}">Dashboard</a></li>
-          {% elif current_user.is_admin %}
-            <li><a href="{{ url_for('admin.admin_home') }}">Dashboard</a></li>
+          {% if current_user.is_authenticated %}
+            {% if current_user.is_student() %}
+              <li><a href="{{ url_for('student.student_home') }}">Dashboard</a></li>
+            {% elif current_user.is_teacher() %}
+              <li><a href="{{ url_for('teacher.teacher_home') }}">Dashboard</a></li>
+            {% elif current_user.is_admin() %}
+              <li><a href="{{ url_for('admin.admin_home') }}">Dashboard</a></li>
+            {% endif %}
           {% else %}
             <li><a href="{{ url_for('main.about') }}">About</a></li>
           {% endif %}

@@ -24,6 +24,7 @@ class User(db.Model):
         self.password = bcrypt.generate_password_hash(password)
         self.registered_on = datetime.datetime.now()
         self.student = student
+        self.teacher = teacher
         self.admin = admin
 
     def is_authenticated(self):

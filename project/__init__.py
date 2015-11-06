@@ -42,13 +42,13 @@ db = SQLAlchemy(app)
 from project.main.views import main_blueprint
 from project.user.views import user_blueprint
 from project.student.views import student_blueprint
-# from project.teachers.views import teachers_blueprint
+from project.teacher.views import teacher_blueprint
 from project.admin.views import admin_blueprint
 
 app.register_blueprint(main_blueprint)
 app.register_blueprint(user_blueprint)
 app.register_blueprint(student_blueprint)
-# app.register_blueprint(teachers_blueprint)
+app.register_blueprint(teacher_blueprint)
 app.register_blueprint(admin_blueprint)
 
 
