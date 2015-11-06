@@ -3,7 +3,7 @@
 
 import datetime
 
-from project import db, bcrypt_hash
+from project import db, bcrypt
 
 
 class User(db.Model):
@@ -21,7 +21,7 @@ class User(db.Model):
     def __init__(self, email, password, student=True,
                  teacher=False, admin=False):
         self.email = email
-        self.password = bcrypt_hash.generate_password_hash(password)
+        self.password = bcrypt.generate_password_hash(password)
         self.registered_on = datetime.datetime.now()
         self.student = student
         self.admin = admin

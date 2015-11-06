@@ -9,7 +9,7 @@ from flask import render_template, Blueprint, url_for, \
     redirect, flash, request
 from flask.ext.login import login_user, logout_user, login_required
 
-from project import bcrypt_hash, db
+from project import bcrypt, db
 from project.models import User
 from project.user.forms import LoginForm, RegisterForm
 
@@ -48,7 +48,7 @@ def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user and bcrypt_hash.check_password_hash(
+        if user and bcrypt.check_password_hash(
                 user.password, request.form['password']):
             login_user(user)
             flash('You are logged in. Welcome!', 'success')
