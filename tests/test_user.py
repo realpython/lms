@@ -65,7 +65,7 @@ class TestUserBlueprint(BaseTestCase):
             self.client.post('/login', data=dict(
                 email='admin@admin.com', password='admin_user'
             ), follow_redirects=True)
-            self.assertTrue(current_user.id == 3)
+            self.assertTrue(current_user.id == 4)
 
     def test_registered_on_defaults_to_datetime(self):
         # Ensure that registered_on is a datetime.
@@ -108,7 +108,10 @@ class TestUserBlueprint(BaseTestCase):
                 ),
                 follow_redirects=True
             )
-            self.assertIn(b'Hi', response.data)
+            self.assertIn(
+                b'<h1>Welcome, <em>test@tester.com</em>!</h1>',
+                response.data
+            )
             self.assertTrue(current_user.email == "test@tester.com")
             self.assertTrue(current_user.is_authenticated())
             self.assertTrue(current_user.is_active())

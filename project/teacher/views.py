@@ -14,6 +14,7 @@ from project import db
 from project.models import Class
 from project.teacher.forms import AddClassForm, UpdateClassForm
 
+
 ##########
 # config #
 ##########
@@ -51,7 +52,7 @@ def validate_teacher(f):
 ##########
 
 
-@teacher_blueprint.route('/teacher/classes/')
+@teacher_blueprint.route('/teacher/classes')
 @login_required
 @validate_teacher
 def show_classes():
@@ -71,7 +72,7 @@ def show_single_class(class_id):
 
 
 @teacher_blueprint.route(
-    '/teacher/add_class/',
+    '/teacher/add_class',
     methods=['GET', 'POST']
 )
 @login_required

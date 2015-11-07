@@ -31,6 +31,14 @@ class BaseTestCase(TestCase):
             admin=False
         )
         db.session.add(teacherUser)
+        teacherUserTwo = User(
+            email="michael@teacher.com",
+            password="teacher_user",
+            student=False,
+            teacher=True,
+            admin=False
+        )
+        db.session.add(teacherUserTwo)
         adminUser = User(
             email="admin@admin.com",
             password="admin_user",
