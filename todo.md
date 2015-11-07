@@ -8,10 +8,6 @@
 1. Students have view an individual class
 1. Add validate_student decorator
 
-## Teachers
-
-1. Ensure that only the teacher who created the class can view the class
-
 ## Admin
 
 1. Admin have full API access
