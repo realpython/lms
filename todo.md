@@ -2,9 +2,9 @@
 
 ## Students
 
-1. Students have classes
-1. Students can join a class
-1. Students can view an individual class
+1. Students can add a cours
+1. Students have courses
+1. Students can view an individual cours
 1. Add validate_student decorator
 
 ## Admin
@@ -19,4 +19,4 @@
 1. Add quizes
 1. Add grades
 1. Refactor and normalize models/schema
-1. Rules for when students can drop/remove classes? (or can this only come from an admin?)
+1. Rules for when students can drop/remove courses? (or can this only come from an admin?)
