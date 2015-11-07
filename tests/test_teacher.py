@@ -39,6 +39,29 @@ class TestTeacherBlueprint(BaseTestCase):
             self.assertFalse(current_user.is_admin())
             self.assertEqual(response.status_code, 200)
 
+    def test_teacher_dashboard(self):
+        # Ensure dashboard behaves correctly.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            response = self.client.get('/teachers/')
+            self.assertIn(
+                b'<h2>Your Classes</h2>',
+                response.data
+            )
+            self.assertIn(
+                b'<p>You are not teaching any classes.</p>',
+                response.data
+            )
+            self.assertEqual(response.status_code, 200)
+
 
 if __name__ == '__main__':
     unittest.main()

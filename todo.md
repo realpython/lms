@@ -9,8 +9,6 @@
 
 ## Teachers
 
-1. Display classes taught on the main teacher page
-1. Teachers have classes
 1. Teachers can create a class
 1. Teachers can view an individual class
 1. Update URL bar for /teachers => /teachers/teacher_id
