@@ -10,10 +10,13 @@
 
 ## Teachers
 
-1. Teachers can edit individual classes
 1. Ensure that only the teacher who created the class can view the class
 
 ## Admin
 
 1. Admin have full API access
 1. Add validate_admin decorator
+
+## Other
+
+1. DRY all tests

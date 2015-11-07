@@ -174,6 +174,49 @@ class TestTeacherBlueprint(BaseTestCase):
             )
             self.assertEqual(response.status_code, 200)
 
+    def test_teacher_edit_class(self):
+        # Ensure a teacher can edit an individual class.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.post(
+                '/teacher/add_class/',
+                data=dict(
+                    name='Music Appreciation',
+                    description='This class teaches you how to understand \
+                                 what you are hearing.',
+                    start_date='2015-11-06',
+                    end_date='2015-11-07'
+                ),
+                follow_redirects=True
+            )
+            response = self.client.post(
+                '/teacher/update_class/1',
+                data=dict(
+                    name='Art Appreciation',
+                    description='From here to there.',
+                    start_date='2015-11-06',
+                    end_date='2015-11-07'
+                ),
+                follow_redirects=True
+            )
+            self.assertIn(
+                b'<h1>Art Appreciation</h1>',
+                response.data
+            )
+            self.assertIn(
+                b'From here to there.',
+                response.data
+            )
+            self.assertEqual(response.status_code, 200)
+
 
 if __name__ == '__main__':
     unittest.main()
