@@ -5,7 +5,8 @@
 # imports #
 ###########
 
-from flask import render_template, Blueprint, request, flash, redirect
+from functools import wraps
+from flask import render_template, Blueprint, request, flash, redirect, url_for
 from flask.ext.login import login_required
 from flask.ext.login import current_user
 
@@ -32,6 +33,15 @@ def get_single_class(class_id):
     return Class.query.filter_by(id=class_id).first()
 
 
+def validate_teacher(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.is_teacher() is False:
+            return redirect(url_for('user.login', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 ##########
 # routes #
 ##########
@@ -39,6 +49,7 @@ def get_single_class(class_id):
 
 @teacher_blueprint.route('/teacher/classes/')
 @login_required
+@validate_teacher
 def show_classes():
     return render_template(
         '/teacher/classes.html', classes=get_classes(current_user.get_id())
@@ -50,6 +61,7 @@ def show_classes():
     methods=['GET', 'POST']
 )
 @login_required
+@validate_teacher
 def add_class():
     form = AddClassForm(request.form)
     if form.validate_on_submit():
@@ -70,6 +82,7 @@ def add_class():
 
 @teacher_blueprint.route('/teacher/class/<int:class_id>')
 @login_required
+@validate_teacher
 def show_single_class(class_id):
     return render_template(
         '/teacher/class_description.html',
