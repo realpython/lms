@@ -62,6 +62,28 @@ class TestTeacherBlueprint(BaseTestCase):
             )
             self.assertEqual(response.status_code, 200)
 
+    def test_validate_teacher_decorator(self):
+        # Ensure a user has to be a teacher to view all classes.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='student@student.com',
+                    password='student_user',
+                    confirm='student_user'
+                ),
+                follow_redirects=True
+            )
+            response = self.client.get(
+                '/teacher/classes/',
+                follow_redirects=True
+            )
+            self.assertIn(
+                b'You do not have the correct permissions to view that page.',
+                response.data
+            )
+            self.assertEqual(response.status_code, 200)
+
     def test_teacher_add_class_page(self):
         # Ensure a teacher can view add class page.
         with self.client:
