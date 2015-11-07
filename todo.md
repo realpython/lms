@@ -2,9 +2,9 @@
 
 ## Students
 
-1. Students can add a cours
+1. Students can add a course
 1. Students have courses
-1. Students can view an individual cours
+1. Students can view an individual course
 1. Add validate_student decorator
 
 ## Admin
