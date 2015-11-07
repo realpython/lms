@@ -15,19 +15,30 @@ class BaseTestCase(TestCase):
 
     def setUp(self):
         db.create_all()
+        studentUser = User(
+            email="student@student.com",
+            password="student_user",
+            student=True,
+            teacher=False,
+            admin=False
+        )
+        db.session.add(studentUser)
+        teacherUser = User(
+            email="teacher@teacher.com",
+            password="teacher_user",
+            student=False,
+            teacher=True,
+            admin=False
+        )
+        db.session.add(teacherUser)
         adminUser = User(
-            email="ad@min.com",
+            email="admin@admin.com",
             password="admin_user",
+            student=False,
+            teacher=False,
             admin=True
         )
         db.session.add(adminUser)
-        teacherUser = User(
-            email="teacher@teacher.com",
-            password="teacher",
-            teacher=True,
-            student=False
-        )
-        db.session.add(teacherUser)
         db.session.commit()
 
     def tearDown(self):

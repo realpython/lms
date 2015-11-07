@@ -16,18 +16,21 @@ class TestStudentBlueprint(BaseTestCase):
             response = self.client.post(
                 '/register',
                 data=dict(
-                    email="student@student.com",
-                    password="student",
-                    confirm="student"
+                    email='stu@sdent.com',
+                    password='student_user',
+                    confirm='student_user'
                 ),
                 follow_redirects=True
             )
-            self.assertIn(b'Welcome!', response.data)
+            self.assertIn(
+                b'Welcome, <em>stu@sdent.com</em>!',
+                response.data
+            )
             self.assertIn(
                 b'<li><a href="/students/">Dashboard</a></li>',
                 response.data
             )
-            self.assertTrue(current_user.email == "student@student.com")
+            self.assertTrue(current_user.email == "stu@sdent.com")
             self.assertTrue(current_user.is_authenticated)
             self.assertTrue(current_user.is_active)
             self.assertFalse(current_user.is_anonymous())

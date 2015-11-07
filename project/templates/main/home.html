@@ -4,7 +4,14 @@
 
 <div class="body-content">
   <div class="row">
-    <h1>Welcome!</h1>
+    {% if current_user.is_authenticated %}
+      <h1>Welcome, <em>{{ current_user.email }}</em>!</h1>
+      <p>Student? {{current_user.is_student() }}<p>
+      <p>Teacher? {{ current_user.is_teacher() }}</p>
+      <p>Admin? {{ current_user.is_admin() }}</p>
+    {% else %}
+      <h1>Welcome!</h1>
+    {% endif %}
   </div>
 </div>
 
