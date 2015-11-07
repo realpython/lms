@@ -22,7 +22,7 @@ class TestUserBlueprint(BaseTestCase):
                 data=dict(email="ad@min.com", password="admin_user"),
                 follow_redirects=True
             )
-            self.assertIn(b'Welcome', response.data)
+            self.assertIn(b'Welcome!', response.data)
             self.assertIn(b'Logout', response.data)
             self.assertIn(b'Dashboard', response.data)
             self.assertTrue(current_user.email == "ad@min.com")
@@ -44,11 +44,6 @@ class TestUserBlueprint(BaseTestCase):
     def test_logout_route_requires_login(self):
         # Ensure logout route requres logged in user.
         response = self.client.get('/logout', follow_redirects=True)
-        self.assertIn(b'Please log in to access this page', response.data)
-
-    def test_member_route_requires_login(self):
-        # Ensure member route requres logged in user.
-        response = self.client.get('/members', follow_redirects=True)
         self.assertIn(b'Please log in to access this page', response.data)
 
     def test_validate_success_login_form(self):

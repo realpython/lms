@@ -22,7 +22,7 @@ class TestStudentBlueprint(BaseTestCase):
                 ),
                 follow_redirects=True
             )
-            self.assertIn(b'Hi', response.data)
+            self.assertIn(b'Welcome!', response.data)
             self.assertIn(
                 b'<li><a href="/students/">Dashboard</a></li>',
                 response.data
