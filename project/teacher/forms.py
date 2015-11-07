@@ -6,12 +6,16 @@ from wtforms import TextField, DateField, TextAreaField
 from wtforms.validators import DataRequired, Length
 
 
-class AddClassForm(Form):
+class AddCourseForm(Form):
     name = TextField(
-        'Class Name',
+        'Course Name',
         validators=[DataRequired(), Length(min=3, max=40)])
     description = TextAreaField(
-        'Class Description',
+        'Course Description',
+        validators=[DataRequired()]
+    )
+    subject = TextField(
+        'Subject',
         validators=[DataRequired()]
     )
     start_date = DateField(
@@ -24,12 +28,16 @@ class AddClassForm(Form):
     )
 
 
-class UpdateClassForm(Form):
+class UpdateCourseForm(Form):
     name = TextField(
-        'Class Name',
+        'Course Name',
         validators=[DataRequired(), Length(min=3, max=40)])
     description = TextAreaField(
-        'Class Description',
+        'Course Description',
+        validators=[DataRequired()]
+    )
+    subject = TextField(
+        'Subject',
         validators=[DataRequired()]
     )
     start_date = DateField(

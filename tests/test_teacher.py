@@ -27,7 +27,7 @@ class TestTeacherBlueprint(BaseTestCase):
                 response.data
             )
             self.assertIn(
-                b'<li><a href="/teacher/classes">View Classes</a></li>',
+                b'<li><a href="/teacher/courses">View Courses</a></li>',
                 response.data
             )
             self.assertTrue(current_user.email == "teacher@teacher.com")
@@ -39,8 +39,8 @@ class TestTeacherBlueprint(BaseTestCase):
             self.assertFalse(current_user.is_admin())
             self.assertEqual(response.status_code, 200)
 
-    def test_teacher_classes(self):
-        # Ensure a teacher can view all classes.
+    def test_teacher_courses(self):
+        # Ensure a teacher can view all courses.
         with self.client:
             self.client.post(
                 '/login',
@@ -51,19 +51,19 @@ class TestTeacherBlueprint(BaseTestCase):
                 ),
                 follow_redirects=True
             )
-            response = self.client.get('/teacher/classes')
+            response = self.client.get('/teacher/courses')
             self.assertIn(
-                b'<h1>All Classes</h1>',
+                b'<h1>All Courses</h1>',
                 response.data
             )
             self.assertIn(
-                b'<p>You are not teaching any classes.</p>',
+                b'<p>You are not teaching any courses.</p>',
                 response.data
             )
             self.assertEqual(response.status_code, 200)
 
     def test_validate_teacher_decorator(self):
-        # Ensure a user has to be a teacher to view all classes.
+        # Ensure a user has to be a teacher to view all courses.
         with self.client:
             self.client.post(
                 '/login',
@@ -75,7 +75,7 @@ class TestTeacherBlueprint(BaseTestCase):
                 follow_redirects=True
             )
             response = self.client.get(
-                '/teacher/classes',
+                '/teacher/courses',
                 follow_redirects=True
             )
             self.assertIn(
@@ -84,8 +84,8 @@ class TestTeacherBlueprint(BaseTestCase):
             )
             self.assertEqual(response.status_code, 200)
 
-    def test_teacher_add_class_page(self):
-        # Ensure a teacher can view add class page.
+    def test_teacher_add_course_page(self):
+        # Ensure a teacher can view add course page.
         with self.client:
             self.client.post(
                 '/login',
@@ -96,15 +96,15 @@ class TestTeacherBlueprint(BaseTestCase):
                 ),
                 follow_redirects=True
             )
-            response = self.client.get('/teacher/add_class')
+            response = self.client.get('/teacher/add_course')
             self.assertIn(
-                b'<h1>Add Class</h1>',
+                b'<h1>Add Course</h1>',
                 response.data
             )
             self.assertEqual(response.status_code, 200)
 
-    def test_teacher_add_class(self):
-        # Ensure a teacher can add a new class.
+    def test_teacher_add_course(self):
+        # Ensure a teacher can add a new course.
         with self.client:
             self.client.post(
                 '/login',
@@ -116,10 +116,11 @@ class TestTeacherBlueprint(BaseTestCase):
                 follow_redirects=True
             )
             response = self.client.post(
-                '/teacher/add_class',
+                '/teacher/add_course',
                 data=dict(
                     name='Music Appreciation',
-                    description='This class teaches you how to understand \
+                    subject='Liberal Arts',
+                    description='This course teaches you how to understand \
                                  what you are hearing.',
                     start_date='2015-11-06',
                     end_date='2015-11-07'
@@ -127,7 +128,7 @@ class TestTeacherBlueprint(BaseTestCase):
                 follow_redirects=True
             )
             self.assertIn(
-                b'<h1>All Classes</h1>',
+                b'<h1>All Courses</h1>',
                 response.data
             )
             self.assertIn(
@@ -135,13 +136,13 @@ class TestTeacherBlueprint(BaseTestCase):
                 response.data
             )
             self.assertNotIn(
-                b'<p>You are not teaching any classes.</p>',
+                b'<p>You are not teaching any courses.</p>',
                 response.data
             )
             self.assertEqual(response.status_code, 200)
 
-    def test_teacher_view_classes(self):
-        # Ensure a teacher can only view classes that they create.
+    def test_teacher_view_courses(self):
+        # Ensure a teacher can only view courses that they create.
         with self.client:
             self.client.post(
                 '/login',
@@ -153,10 +154,10 @@ class TestTeacherBlueprint(BaseTestCase):
                 follow_redirects=True
             )
             self.client.post(
-                '/teacher/add_class',
+                '/teacher/add_course',
                 data=dict(
                     name='Music Appreciation',
-                    description='This class teaches you how to understand \
+                    description='This course teaches you how to understand \
                                  what you are hearing.',
                     start_date='2015-11-06',
                     end_date='2015-11-07'
@@ -173,9 +174,9 @@ class TestTeacherBlueprint(BaseTestCase):
                 ),
                 follow_redirects=True
             )
-            response = self.client.get('/teacher/classes')
+            response = self.client.get('/teacher/courses')
             self.assertIn(
-                b'<h1>All Classes</h1>',
+                b'<h1>All Courses</h1>',
                 response.data
             )
             self.assertNotIn(
@@ -183,13 +184,13 @@ class TestTeacherBlueprint(BaseTestCase):
                 response.data
             )
             self.assertIn(
-                b'<p>You are not teaching any classes.</p>',
+                b'<p>You are not teaching any courses.</p>',
                 response.data
             )
             self.assertEqual(response.status_code, 200)
 
-    def test_teacher_view_class(self):
-        # Ensure a teacher can view an individual class.
+    def test_teacher_view_course(self):
+        # Ensure a teacher can view an individual course.
         with self.client:
             self.client.post(
                 '/login',
@@ -201,29 +202,30 @@ class TestTeacherBlueprint(BaseTestCase):
                 follow_redirects=True
             )
             self.client.post(
-                '/teacher/add_class',
+                '/teacher/add_course',
                 data=dict(
                     name='Music Appreciation',
-                    description='This class teaches you how to understand \
+                    subject='Liberal Arts',
+                    description='This course teaches you how to understand \
                                  what you are hearing.',
                     start_date='2015-11-06',
                     end_date='2015-11-07'
                 ),
                 follow_redirects=True
             )
-            response = self.client.get('/teacher/class/1')
+            response = self.client.get('/teacher/course/1')
             self.assertIn(
                 b'<h1>Music Appreciation</h1>',
                 response.data
             )
             self.assertIn(
-                b'This class teaches you how to understand',
+                b'This course teaches you how to understand',
                 response.data
             )
             self.assertEqual(response.status_code, 200)
 
-    def test_teacher_edit_class(self):
-        # Ensure a teacher can edit an individual class.
+    def test_teacher_edit_course(self):
+        # Ensure a teacher can edit an individual course.
         with self.client:
             self.client.post(
                 '/login',
@@ -235,10 +237,11 @@ class TestTeacherBlueprint(BaseTestCase):
                 follow_redirects=True
             )
             self.client.post(
-                '/teacher/add_class',
+                '/teacher/add_course',
                 data=dict(
                     name='Music Appreciation',
-                    description='This class teaches you how to understand \
+                    subject='Liberal Arts',
+                    description='This course teaches you how to understand \
                                  what you are hearing.',
                     start_date='2015-11-06',
                     end_date='2015-11-07'
@@ -246,9 +249,10 @@ class TestTeacherBlueprint(BaseTestCase):
                 follow_redirects=True
             )
             response = self.client.post(
-                '/teacher/update_class/1',
+                '/teacher/update_course/1',
                 data=dict(
                     name='Art Appreciation',
+                    subject='Liberal Arts',
                     description='From here to there.',
                     start_date='2015-11-06',
                     end_date='2015-11-07'
@@ -265,8 +269,8 @@ class TestTeacherBlueprint(BaseTestCase):
             )
             self.assertEqual(response.status_code, 200)
 
-    def test_teacher_edit_class_page(self):
-        # Ensure a teacher can view edit class page.
+    def test_teacher_edit_course_page(self):
+        # Ensure a teacher can view edit course page.
         with self.client:
             self.client.post(
                 '/login',
@@ -278,19 +282,20 @@ class TestTeacherBlueprint(BaseTestCase):
                 follow_redirects=True
             )
             self.client.post(
-                '/teacher/add_class',
+                '/teacher/add_course',
                 data=dict(
                     name='Music Appreciation',
-                    description='This class teaches you how to understand \
+                    subject='Liberal Arts',
+                    description='This course teaches you how to understand \
                                  what you are hearing.',
                     start_date='2015-11-06',
                     end_date='2015-11-07'
                 ),
                 follow_redirects=True
             )
-            response = self.client.get('/teacher/update_class/1')
+            response = self.client.get('/teacher/update_course/1')
             self.assertIn(
-                b'<h1>Update Class</h1>',
+                b'<h1>Update Course</h1>',
                 response.data
             )
             self.assertIn(

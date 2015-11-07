@@ -11,8 +11,8 @@ from flask.ext.login import login_required
 from flask.ext.login import current_user
 
 from project import db
-from project.models import Class
-from project.teacher.forms import AddClassForm, UpdateClassForm
+from project.models import Course
+from project.teacher.forms import AddCourseForm, UpdateCourseForm
 
 
 ##########
@@ -26,12 +26,12 @@ teacher_blueprint = Blueprint('teacher', __name__,)
 # helpers #
 ###########
 
-def get_classes(user_id):
-    return Class.query.filter_by(user_id=user_id).all()
+def get_courses(user_id):
+    return Course.query.filter_by(teacher_id=user_id).all()
 
 
-def get_single_class(class_id):
-    return Class.query.filter_by(id=class_id).first()
+def get_single_course(course_id):
+    return Course.query.filter_by(id=course_id).first()
 
 
 def validate_teacher(f):
@@ -52,71 +52,73 @@ def validate_teacher(f):
 ##########
 
 
-@teacher_blueprint.route('/teacher/classes')
+@teacher_blueprint.route('/teacher/courses')
 @login_required
 @validate_teacher
-def show_classes():
+def show_courses():
     return render_template(
-        '/teacher/classes.html', classes=get_classes(current_user.get_id())
+        '/teacher/courses.html', courses=get_courses(current_user.get_id())
     )
 
 
-@teacher_blueprint.route('/teacher/class/<int:class_id>')
+@teacher_blueprint.route('/teacher/course/<int:course_id>')
 @login_required
 @validate_teacher
-def show_single_class(class_id):
+def show_single_course(course_id):
     return render_template(
         '/teacher/description.html',
-        single_class=get_single_class(class_id)
+        single_course=get_single_course(course_id)
     )
 
 
 @teacher_blueprint.route(
-    '/teacher/add_class',
+    '/teacher/add_course',
     methods=['GET', 'POST']
 )
 @login_required
 @validate_teacher
-def add_class():
-    form = AddClassForm(request.form)
+def add_course():
+    form = AddCourseForm(request.form)
     if form.validate_on_submit():
-        new_class = Class(
+        new_course = Course(
             name=form.name.data,
             description=form.description.data,
+            subject=form.subject.data,
             start_date=form.start_date.data,
             end_date=form.end_date.data,
-            user_id=current_user.get_id()
+            teacher_id=current_user.get_id()
         )
-        db.session.add(new_class)
+        db.session.add(new_course)
         db.session.commit()
 
-        flash('Thank you for adding a new class.', 'success')
-        return redirect('/teacher/classes')
+        flash('Thank you for adding a new course.', 'success')
+        return redirect('/teacher/courses')
     return render_template('/teacher/add.html', form=form)
 
 
 @teacher_blueprint.route(
-    '/teacher/update_class/<int:class_id>',
+    '/teacher/update_course/<int:course_id>',
     methods=['GET', 'POST']
 )
 @login_required
 @validate_teacher
-def update_class(class_id):
-    form = UpdateClassForm(request.form)
+def update_course(course_id):
+    form = UpdateCourseForm(request.form)
     if form.validate_on_submit():
-        update_class = get_single_class(class_id)
+        update_course = get_single_course(course_id)
 
-        update_class.name = form.name.data
-        update_class.description = form.description.data
-        update_class.start_date = form.start_date.data
-        update_class.end_date = form.end_date.data
+        update_course.name = form.name.data
+        update_course.description = form.description.data
+        update_course.subject = form.subject.data
+        update_course.start_date = form.start_date.data
+        update_course.end_date = form.end_date.data
 
         db.session.commit()
 
-        flash('Class updated. Thank you', 'success')
-        return redirect('/teacher/class/{0}'.format(class_id))
+        flash('Course updated. Thank you', 'success')
+        return redirect('/teacher/course/{0}'.format(course_id))
     return render_template(
         '/teacher/update.html',
         form=form,
-        single_class=get_single_class(class_id)
+        single_course=get_single_course(course_id)
     )

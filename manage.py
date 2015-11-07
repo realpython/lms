@@ -17,7 +17,7 @@ COV = coverage.coverage(
 COV.start()
 
 from project import app, db
-from project.models import User, Class
+from project.models import User, Course
 
 
 migrate = Migrate(app, db)
@@ -99,24 +99,26 @@ def create_users():
 @manager.command
 def create_data():
     """Creates sample data."""
-    user = User.query.filter_by(email='teacher@teacher.com').first()
-    first_class = Class(
+    teacher = User.query.filter_by(email='teacher@teacher.com').first()
+    first_course = Course(
         name='Philosophy 101',
         description='From Plato to Socrates...',
+        subject='Liberal Arts',
         start_date=datetime.datetime.now(),
         end_date=datetime.datetime.now(),
-        user_id=user.id
+        teacher_id=teacher.id
     )
-    db.session.add(first_class)
-    second_class = Class(
+    db.session.add(first_course)
+    second_course = Course(
         name='Music Appreciation',
-        description='This class teaches you how to understand \
+        description='This course teaches you how to understand \
                      what you are hearing.',
+        subject='Liberal Arts',
         start_date=datetime.datetime.now(),
         end_date=datetime.datetime.now(),
-        user_id=user.id
+        teacher_id=teacher.id
     )
-    db.session.add(second_class)
+    db.session.add(second_course)
     db.session.commit()
 
 

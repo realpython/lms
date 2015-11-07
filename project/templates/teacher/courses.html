@@ -5,19 +5,19 @@
 <div class="body-content">
   <div class="row">
     <div class="col-md-12">
-      <h1>All Classes</h1>
+      <h1>All Courses</h1>
     </div>
   </div>
   <div class="row">
     <div class="col-md-4">
-        {% if classes %}
+        {% if courses %}
           <ul>
-            {% for class in classes %}
-              <li><a href="#">{{ class.name }}</a></li>
+            {% for course in courses %}
+              <li><a href="{{ url_for('teacher.show_single_course', course_id=course.id) }}">{{ course.name }}</a></li>
             {% endfor %}
           </ul>
         {% else %}
-          <p>You are not taking any classes.</p>
+          <p>You are not teaching any courses.</p>
         {% endif %}
     </div>
   </div>

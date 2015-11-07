@@ -5,15 +5,15 @@
 <div class="body-content">
   <div class="row">
     <div class="col-md-12">
-      <h1>{{ single_class.name }}</h1>
+      <h1>{{ single_course.name }}</h1>
     </div>
   </div>
   <div class="row">
     <div class="col-md-4">
-      <p>{{ single_class.description }}</p>
-      <p>{{ single_class.start_date }}</p>
-      <p>{{ single_class.end_date }}</p>
-      <p><a class="btn btn-default btn-sm" href="{{ url_for('teacher.update_class', class_id=single_class.id) }}" role="button">Edit</a></p>
+      <p>{{ single_course.description }}</p>
+      <p>{{ single_course.start_date }}</p>
+      <p>{{ single_course.end_date }}</p>
+      <p><a class="btn btn-default btn-sm" href="{{ url_for('teacher.update_course', course_id=single_course.id) }}" role="button">Edit</a></p>
     </div>
   </div>
 </div>

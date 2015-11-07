@@ -27,7 +27,7 @@ class TestStudentBlueprint(BaseTestCase):
                 response.data
             )
             self.assertIn(
-                b'<li><a href="/student/classes">View Classes</a></li>',
+                b'<li><a href="/student/courses">View Courses</a></li>',
                 response.data
             )
             self.assertTrue(current_user.email == "stu@dent.com")
@@ -39,7 +39,7 @@ class TestStudentBlueprint(BaseTestCase):
             self.assertFalse(current_user.is_admin())
             self.assertEqual(response.status_code, 200)
 
-    def test_teacher_login(self):
+    def test_student_login(self):
         # Ensure login behaves correctly.
         with self.client:
             response = self.client.post(
@@ -56,7 +56,7 @@ class TestStudentBlueprint(BaseTestCase):
                 response.data
             )
             self.assertIn(
-                b'<li><a href="/student/classes">View Classes</a></li>',
+                b'<li><a href="/student/courses">View Courses</a></li>',
                 response.data
             )
             self.assertTrue(current_user.email == "student@student.com")
@@ -68,8 +68,8 @@ class TestStudentBlueprint(BaseTestCase):
             self.assertFalse(current_user.is_admin())
             self.assertEqual(response.status_code, 200)
 
-    def test_student_classes(self):
-        # Ensure a student can view all classes s/he are taking.
+    def test_student_courses(self):
+        # Ensure a student can view all courses s/he are taking.
         with self.client:
             self.client.post(
                 '/login',
@@ -80,13 +80,13 @@ class TestStudentBlueprint(BaseTestCase):
                 ),
                 follow_redirects=True
             )
-            response = self.client.get('/student/classes')
+            response = self.client.get('/student/courses')
             self.assertIn(
-                b'<h1>All Classes</h1>',
+                b'<h1>All Courses</h1>',
                 response.data
             )
             self.assertIn(
-                b'<p>You are not taking any classes.</p>',
+                b'<p>You are not taking any courses.</p>',
                 response.data
             )
             self.assertEqual(response.status_code, 200)

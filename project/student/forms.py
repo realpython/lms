@@ -4,18 +4,18 @@
 from flask_wtf import Form
 from wtforms import SelectField
 
-from project.models import Class
+from project.models import Course
 
 
-def get_classes():
-    return Class.query.all()
+def get_courses():
+    return Course.query.all()
 
 
-class AddClassForm(Form):
-    classes = SelectField(
-        u"Available Classes",
+class AddCourseForm(Form):
+    courses = SelectField(
+        u"Available Courses",
         choices=[
-            (single_class.name, single_class.name)
-            for single_class in get_classes()
+            (single_course.name, single_course.name)
+            for single_course in get_courses()
         ]
     )

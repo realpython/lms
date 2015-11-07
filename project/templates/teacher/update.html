@@ -6,7 +6,7 @@
 <div class="body-content">
   <div class="row">
     <div class="col-md-12">
-      <h1>Update Class</h1>
+      <h1>Update Course</h1>
     </div>
   </div>
   <div class="row">
@@ -20,13 +20,14 @@
 
       <div>
 
-        {{ wtf.form_field(form.name, value=single_class.name) }}
-        <label class="control-label" for="description">Class Description</label>
-        <textarea class="form-control" id="description" name="description" required>{{ single_class.description }}</textarea>
-        {{ wtf.form_field(form.start_date, type="date", value=single_class.start_date.strftime('%Y-%m-%d')) }}
-        {{ wtf.form_field(form.end_date, type="date", value=single_class.end_date.strftime('%Y-%m-%d')) }}
+        {{ wtf.form_field(form.name, value=single_course.name) }}
+        <label class="control-label" for="description">Course Description</label>
+        <textarea class="form-control" id="description" name="description" required>{{ single_course.description }}</textarea>
+        {{ wtf.form_field(form.subject, value=single_course.subject) }}
+        {{ wtf.form_field(form.start_date, type="date", value=single_course.start_date.strftime('%Y-%m-%d')) }}
+        {{ wtf.form_field(form.end_date, type="date", value=single_course.end_date.strftime('%Y-%m-%d')) }}
 
-        <button class="btn btn-success" type="submit">Update Class!</button>
+        <button class="btn btn-success" type="submit">Update Course!</button>
 
       </div>
 

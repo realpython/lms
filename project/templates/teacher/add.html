@@ -6,7 +6,7 @@
 <div class="body-content">
   <div class="row">
     <div class="col-md-12">
-      <h1>Add Class</h1>
+      <h1>Add Course</h1>
     </div>
   </div>
   <div class="row">
@@ -22,10 +22,11 @@
 
         {{ wtf.form_field(form.name) }}
         {{ wtf.form_field(form.description) }}
+        {{ wtf.form_field(form.subject) }}
         {{ wtf.form_field(form.start_date, type="date") }}
         {{ wtf.form_field(form.end_date, type="date") }}
 
-        <button class="btn btn-success" type="submit">Add Class!</button>
+        <button class="btn btn-success" type="submit">Add Course!</button>
 
       </div>
 

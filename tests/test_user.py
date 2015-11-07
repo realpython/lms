@@ -78,10 +78,10 @@ class TestUserBlueprint(BaseTestCase):
 
     def test_check_password(self):
         # Ensure given password is correct after unhashing.
-        user = User.query.filter_by(email='admin@admin.com').first()
+        admin = User.query.filter_by(email='admin@admin.com').first()
         self.assertTrue(
-            bcrypt.check_password_hash(user.password, 'admin_user'))
-        self.assertFalse(bcrypt.check_password_hash(user.password, 'foobar'))
+            bcrypt.check_password_hash(admin.password, 'admin_user'))
+        self.assertFalse(bcrypt.check_password_hash(admin.password, 'foobar'))
 
     def test_validate_invalid_password(self):
         # Ensure user can't login when the pasword is incorrect.

@@ -9,9 +9,8 @@ from flask import render_template, Blueprint, request, flash, redirect
 from flask.ext.login import login_required
 from flask.ext.login import current_user
 
-from project import db
-from project.models import Class
-from project.student.forms import AddClassForm
+from project.models import Course
+# from project.student.forms import AddCourseForm
 
 
 ##########
@@ -25,8 +24,8 @@ student_blueprint = Blueprint('student', __name__,)
 # helpers #
 ###########
 
-def get_classes(user_id):
-    return Class.query.filter_by(user_id=user_id).all()
+def get_courses(user_id):
+    pass
 
 
 ##########
@@ -34,23 +33,23 @@ def get_classes(user_id):
 ##########
 
 
-@student_blueprint.route('/student/classes')
+@student_blueprint.route('/student/courses')
 @login_required
-def show_classes():
+def show_courses():
     return render_template(
-        '/student/classes.html', classes=get_classes(current_user.get_id())
+        '/student/courses.html'
     )
 
 
 @student_blueprint.route(
-    '/student/add_class',
+    '/student/add_course',
     methods=['GET', 'POST']
 )
 @login_required
-def add_class():
-    form = AddClassForm(request.form)
+def add_course():
+    form = AddCourseForm(request.form)
     if form.validate_on_submit():
         print('Something needs to happen here!')
-        flash('Thank you for adding a new class.', 'success')
-        return redirect('/student/classes')
+        flash('Thank you for adding a new course.', 'success')
+        return redirect('/student/courses')
     return render_template('/student/add.html', form=form)
