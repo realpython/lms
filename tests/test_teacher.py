@@ -27,7 +27,7 @@ class TestTeacherBlueprint(BaseTestCase):
                 response.data
             )
             self.assertIn(
-                b'<li><a href="/teacher/classes/2">View Classes</a></li>',
+                b'<li><a href="/teacher/2/classes/">View Classes</a></li>',
                 response.data
             )
             self.assertTrue(current_user.email == "teacher@teacher.com")
@@ -51,7 +51,7 @@ class TestTeacherBlueprint(BaseTestCase):
                 ),
                 follow_redirects=True
             )
-            response = self.client.get('/teacher/classes/2')
+            response = self.client.get('/teacher/2/classes/')
             self.assertIn(
                 b'<h1>All Classes</h1>',
                 response.data

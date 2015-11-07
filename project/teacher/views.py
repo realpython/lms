@@ -31,9 +31,17 @@ def get_classes(user_id):
 ##########
 
 
-@teacher_blueprint.route('/teacher/classes/<int:user_id>')
+@teacher_blueprint.route('/teacher/<int:user_id>/classes/')
 @login_required
 def classes(user_id):
     return render_template(
         '/teacher/classes.html', classes=get_classes(current_user.get_id())
     )
+
+# @teacher_blueprint.route('/teacher/classes/<int:user_id>')
+# @login_required
+# def classes(user_id):
+#     return render_template(
+#         '/teacher/classes.html', classes=get_classes(current_user.get_id())
+#     )
+
