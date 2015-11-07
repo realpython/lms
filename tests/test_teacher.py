@@ -113,6 +113,10 @@ class TestTeacherBlueprint(BaseTestCase):
                 b'Music Appreciation',
                 response.data
             )
+            self.assertNotIn(
+                b'<p>You are not teaching any classes.</p>',
+                response.data
+            )
             self.assertEqual(response.status_code, 200)
 
 

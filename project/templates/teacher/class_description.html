@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="body-content">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>{{ single_class.name }}</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <p>{{ single_class.description }}</p>
+      <p>{{ single_class.start_date }}</p>
+      <p>{{ single_class.end_date }}</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

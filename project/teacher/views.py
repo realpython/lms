@@ -28,6 +28,10 @@ def get_classes(user_id):
     return Class.query.filter_by(user_id=user_id).all()
 
 
+def get_single_class(class_id):
+    return Class.query.filter_by(id=class_id).first()
+
+
 ##########
 # routes #
 ##########
@@ -35,7 +39,7 @@ def get_classes(user_id):
 
 @teacher_blueprint.route('/teacher/classes/')
 @login_required
-def classes():
+def show_classes():
     return render_template(
         '/teacher/classes.html', classes=get_classes(current_user.get_id())
     )
@@ -62,3 +66,12 @@ def add_class():
         flash('Thank you for adding a new class.', 'success')
         return redirect('/teacher/classes'.format(current_user.get_id()))
     return render_template('/teacher/class.html', form=form)
+
+
+@teacher_blueprint.route('/teacher/class/<int:class_id>')
+@login_required
+def show_single_class(class_id):
+    return render_template(
+        '/teacher/class_description.html',
+        single_class=get_single_class(class_id)
+    )
