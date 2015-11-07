@@ -64,8 +64,8 @@ class User(db.Model):
         return '<User {0}>'.format(self.email)
 
 """
-'user_id' in the Class model is currently used
-for indicating the teacher and student - REFACTOR!
+'user_id' in the Class model is currently used for both the teacher (class
+taught) and student (class taken) - REFACTOR!
 """
 
 
