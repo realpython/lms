@@ -1,6 +1,6 @@
 # Learning Management System
 
-Just a basic LMS...
+Just a basic LMS... built with brute force
 
 [![Build Status](https://travis-ci.org/realpython/lms.svg?branch=master)](https://travis-ci.org/realpython/lms)
 

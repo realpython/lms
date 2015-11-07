@@ -19,3 +19,4 @@
 1. Add assignments
 1. Add quizes
 1. Add grades
+1. Refactor and normalize models/schema

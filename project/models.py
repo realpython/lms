@@ -63,6 +63,11 @@ class User(db.Model):
     def __repr__(self):
         return '<User {0}>'.format(self.email)
 
+"""
+'user_id' in the Class model is currently used
+for indicating the teacher and student - REFACTOR!
+"""
+
 
 class Class(db.Model):
 
