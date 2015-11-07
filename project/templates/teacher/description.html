@@ -13,6 +13,7 @@
       <p>{{ single_class.description }}</p>
       <p>{{ single_class.start_date }}</p>
       <p>{{ single_class.end_date }}</p>
+      <p><a class="btn btn-default btn-sm" href="{{ url_for('teacher.update_class', class_id=single_class.id) }}" role="button">Edit</a></p>
     </div>
   </div>
 </div>

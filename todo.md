@@ -11,6 +11,7 @@
 ## Teachers
 
 1. Teachers can edit individual classes
+1. Ensure that only the teacher who created the class can view the class
 
 ## Admin
 

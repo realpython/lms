@@ -22,3 +22,21 @@ class AddClassForm(Form):
         'End Date',
         validators=[DataRequired()]
     )
+
+
+class UpdateClassForm(Form):
+    name = TextField(
+        'Class Name',
+        validators=[DataRequired(), Length(min=3, max=40)])
+    description = TextAreaField(
+        'Class Description',
+        validators=[DataRequired()]
+    )
+    start_date = DateField(
+        'Start Date',
+        validators=[DataRequired()]
+    )
+    end_date = DateField(
+        'End Date',
+        validators=[DataRequired()]
+    )

@@ -12,7 +12,7 @@ from flask.ext.login import current_user
 
 from project import db
 from project.models import Class
-from project.teacher.forms import AddClassForm
+from project.teacher.forms import AddClassForm, UpdateClassForm
 
 ##########
 # config #
@@ -60,6 +60,16 @@ def show_classes():
     )
 
 
+@teacher_blueprint.route('/teacher/class/<int:class_id>')
+@login_required
+@validate_teacher
+def show_single_class(class_id):
+    return render_template(
+        '/teacher/description.html',
+        single_class=get_single_class(class_id)
+    )
+
+
 @teacher_blueprint.route(
     '/teacher/add_class/',
     methods=['GET', 'POST']
@@ -80,15 +90,32 @@ def add_class():
         db.session.commit()
 
         flash('Thank you for adding a new class.', 'success')
-        return redirect('/teacher/classes'.format(current_user.get_id()))
-    return render_template('/teacher/class.html', form=form)
+        return redirect('/teacher/classes')
+    return render_template('/teacher/add.html', form=form)
 
 
-@teacher_blueprint.route('/teacher/class/<int:class_id>')
+@teacher_blueprint.route(
+    '/teacher/update_class/<int:class_id>',
+    methods=['GET', 'POST']
+)
 @login_required
 @validate_teacher
-def show_single_class(class_id):
+def update_class(class_id):
+    form = UpdateClassForm(request.form)
+    if form.validate_on_submit():
+        update_class = get_single_class(class_id)
+
+        update_class.name = form.name.data
+        update_class.description = form.description.data
+        update_class.start_date = form.start_date.data
+        update_class.end_date = form.end_date.data
+
+        db.session.commit()
+
+        flash('Class updated. Thank you', 'success')
+        return redirect('/teacher/class/{0}'.format(class_id))
     return render_template(
-        '/teacher/class_description.html',
+        '/teacher/update.html',
+        form=form,
         single_class=get_single_class(class_id)
     )
