@@ -19,7 +19,7 @@
             {% if current_user.is_student() %}
               <li><a href="{{ url_for('student.student_home') }}">Dashboard</a></li>
             {% elif current_user.is_teacher() %}
-              <li><a href="{{ url_for('teacher.teacher_home') }}">Dashboard</a></li>
+              <li><a href="{{ url_for('teacher.teacher_home', user_id=current_user.get_id()) }}">Dashboard</a></li>
             {% elif current_user.is_admin() %}
               <li><a href="{{ url_for('admin.admin_home') }}">Dashboard</a></li>
             {% endif %}

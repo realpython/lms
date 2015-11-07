@@ -18,13 +18,22 @@ from project.models import Class
 teacher_blueprint = Blueprint('teacher', __name__,)
 
 
+###########
+# helpers #
+###########
+
+def get_classes(user_id):
+    return Class.query.filter_by(user_id=user_id).all()
+
+
 ##########
 # routes #
 ##########
 
 
-@teacher_blueprint.route('/teachers/')
+@teacher_blueprint.route('/teacher/<int:user_id>')
 @login_required
-def teacher_home():
-    classes = Class.query.filter_by(user_id=current_user.get_id()).all()
-    return render_template('/teacher/home.html', classes=classes)
+def teacher_home(user_id):
+    return render_template(
+        '/teacher/home.html', classes=get_classes(current_user.get_id())
+    )
