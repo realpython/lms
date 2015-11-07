@@ -11,7 +11,6 @@
 ## Teachers
 
 1. Teachers can edit individual classes
-1. Add validate_teacher decorator
 
 ## Admin
 
