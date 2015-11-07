@@ -1,0 +1,27 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="body-content">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Teacher Home</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <h2>Your Classes</h2>
+        {% if classes %}
+          <ul>
+            {% for class in classes %}
+              <li>{{ class.name }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>You are not teaching any classes.</p>
+        {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

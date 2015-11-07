@@ -4,6 +4,7 @@
 import os
 import unittest
 import coverage
+import datetime
 
 from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
@@ -16,7 +17,7 @@ COV = coverage.coverage(
 COV.start()
 
 from project import app, db
-from project.models import User
+from project.models import User, Class
 
 
 migrate = Migrate(app, db)
@@ -67,32 +68,48 @@ def drop_db():
 
 @manager.command
 def create_users():
-    """Creates users."""
-    db.session.add(
-        User(
-            email='teacher@teacher.com',
-            password='teacher',
-            student=False,
-            teacher=True,
-            admin=False
-        )
+    """Creates sample users."""
+    teacher = User(
+        email='teacher@teacher.com',
+        password='teacher',
+        student=False,
+        teacher=True,
+        admin=False
     )
-    db.session.add(
-        User(
-            email='ad@min.com',
-            password='admin',
-            student=False,
-            teacher=False,
-            admin=True
-        )
+    db.session.add(teacher)
+    admin = User(
+        email='ad@min.com',
+        password='admin',
+        student=False,
+        teacher=False,
+        admin=True
     )
+    db.session.add(admin)
     db.session.commit()
 
 
 @manager.command
 def create_data():
     """Creates sample data."""
-    pass
+    user = User.query.filter_by(email='teacher@teacher.com').first()
+    first_class = Class(
+        name='Philosophy 101',
+        description='From Plato to Socrates...',
+        start_date=datetime.datetime.now(),
+        end_date=datetime.datetime.now(),
+        user_id=user.id
+    )
+    db.session.add(first_class)
+    second_class = Class(
+        name='Music Appreciation',
+        description='This class teaches you how to understand \
+                     what you are hearing.',
+        start_date=datetime.datetime.now(),
+        end_date=datetime.datetime.now(),
+        user_id=user.id
+    )
+    db.session.add(second_class)
+    db.session.commit()
 
 
 if __name__ == '__main__':
