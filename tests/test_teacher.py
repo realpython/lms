@@ -2,7 +2,6 @@
 
 
 import unittest
-import datetime
 
 from flask.ext.login import current_user
 
@@ -41,7 +40,7 @@ class TestTeacherBlueprint(BaseTestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_teacher_classes(self):
-        # Ensure classes displays all classes.
+        # Ensure a teacher can view all classes.
         with self.client:
             self.client.post(
                 '/login',
@@ -64,7 +63,7 @@ class TestTeacherBlueprint(BaseTestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_teacher_add_class_page(self):
-        # Ensure teacher can view add class page.
+        # Ensure a teacher can view add class page.
         with self.client:
             self.client.post(
                 '/login',
@@ -83,7 +82,7 @@ class TestTeacherBlueprint(BaseTestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_teacher_add_class(self):
-        # Ensure teacher can add a new classes.
+        # Ensure a teacher can add a new class.
         with self.client:
             self.client.post(
                 '/login',
@@ -115,6 +114,40 @@ class TestTeacherBlueprint(BaseTestCase):
             )
             self.assertNotIn(
                 b'<p>You are not teaching any classes.</p>',
+                response.data
+            )
+            self.assertEqual(response.status_code, 200)
+
+    def test_teacher_view_class(self):
+        # Ensure a teacher can view an individual class.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.post(
+                '/teacher/add_class/',
+                data=dict(
+                    name='Music Appreciation',
+                    description='This class teaches you how to understand \
+                                 what you are hearing.',
+                    start_date='2015-11-06',
+                    end_date='2015-11-07'
+                ),
+                follow_redirects=True
+            )
+            response = self.client.get('/teacher/class/1')
+            self.assertIn(
+                b'<h1>Music Appreciation</h1>',
+                response.data
+            )
+            self.assertIn(
+                b'This class teaches you how to understand',
                 response.data
             )
             self.assertEqual(response.status_code, 200)
