@@ -5,11 +5,13 @@
 # imports #
 ###########
 
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, request, flash, redirect
 from flask.ext.login import login_required
 from flask.ext.login import current_user
 
+from project import db
 from project.models import Class
+from project.teacher.forms import AddClassForm
 
 ##########
 # config #
@@ -38,10 +40,25 @@ def classes(user_id):
         '/teacher/classes.html', classes=get_classes(current_user.get_id())
     )
 
-# @teacher_blueprint.route('/teacher/classes/<int:user_id>')
-# @login_required
-# def classes(user_id):
-#     return render_template(
-#         '/teacher/classes.html', classes=get_classes(current_user.get_id())
-#     )
 
+@teacher_blueprint.route(
+    '/teacher/<int:user_id>/class/',
+    methods=['GET', 'POST']
+)
+@login_required
+def add_class(user_id):
+    form = AddClassForm(request.form)
+    if form.validate_on_submit():
+        new_class = Class(
+            name=form.name.data,
+            description=form.description.data,
+            start_date=form.start_date.data,
+            end_date=form.end_date.data,
+            user_id=current_user.get_id()
+        )
+        db.session.add(new_class)
+        db.session.commit()
+
+        flash('Thank you for adding a new class.', 'success')
+        return redirect('/teacher/{0}/classes'.format(current_user.get_id()))
+    return render_template('/teacher/class.html', form=form)

@@ -1,0 +1,38 @@
+{% extends "_base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+
+<div class="body-content">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Add Class</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+
+    <form class="form" role="form" method="post" action="">
+
+      {{ form.csrf_token }}
+      {{ form.hidden_tag() }}
+      {{ wtf.form_errors(form, hiddens="only") }}
+
+      <div>
+
+        {{ wtf.form_field(form.name) }}
+        {{ wtf.form_field(form.description) }}
+        {{ wtf.form_field(form.start_date, type="date") }}
+        {{ wtf.form_field(form.end_date, type="date") }}
+
+        <button class="btn btn-success" type="submit">Add Class!</button>
+
+      </div>
+
+    </form>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
