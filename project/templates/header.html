@@ -22,6 +22,7 @@
               <ul class="dropdown-menu">
                 {% if current_user.is_student() %}
                   <li><a href="{{ url_for('student.show_classes') }}">View Classes</a></li>
+                  <li><a href="{{ url_for('student.add_class') }}">Add New Class</a></li>
                 {% elif current_user.is_teacher() %}
                   <li><a href="{{ url_for('teacher.show_classes') }}">View Classes</a></li>
                   <li><a href="{{ url_for('teacher.add_class') }}">Add New Class</a></li>
