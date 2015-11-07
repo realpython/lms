@@ -69,6 +69,14 @@ def drop_db():
 @manager.command
 def create_users():
     """Creates sample users."""
+    student = User(
+        email='student@student.com',
+        password='student',
+        student=True,
+        teacher=False,
+        admin=False
+    )
+    db.session.add(student)
     teacher = User(
         email='teacher@teacher.com',
         password='teacher',

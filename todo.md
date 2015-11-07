@@ -5,7 +5,7 @@
 1. Display student classes on the main student page
 1. Students have classes
 1. Students can join a class
-1. Students have view an individual class
+1. Students can view an individual class
 1. Add validate_student decorator
 
 ## Admin
@@ -16,3 +16,6 @@
 ## Other
 
 1. DRY all tests
+1. Add assignments
+1. Add quizes
+1. Add grades

@@ -17,20 +17,19 @@
         <ul class="nav navbar-nav">
           <li><a href="{{ url_for('main.about') }}">About</a></li>
           {% if current_user.is_authenticated %}
-            {% if current_user.is_student() %}
-              <li><a href="{{ url_for('student.student_home') }}">Dashboard</a></li>
-            {% elif current_user.is_teacher() %}
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Classes <span class="caret"></span></a>
-                <ul class="dropdown-menu">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Classes <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                {% if current_user.is_student() %}
+                  <li><a href="{{ url_for('student.show_classes') }}">View Classes</a></li>
+                {% elif current_user.is_teacher() %}
                   <li><a href="{{ url_for('teacher.show_classes') }}">View Classes</a></li>
                   <li><a href="{{ url_for('teacher.add_class') }}">Add New Class</a></li>
-                </ul>
-              </li>
-            {% elif current_user.is_admin() %}
-              <li><a href="{{ url_for('admin.admin_home') }}">Dashboard</a></li>
-            {% endif %}
-
+                {% elif current_user.is_admin() %}
+                  <li><a href="{{ url_for('admin.admin_home') }}">Dashboard</a></li>
+                {% endif %}
+              </ul>
+            </li>
           {% endif %}
         </ul>
         <ul class="nav navbar-nav navbar-right">

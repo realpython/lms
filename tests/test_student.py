@@ -16,27 +16,79 @@ class TestStudentBlueprint(BaseTestCase):
             response = self.client.post(
                 '/register',
                 data=dict(
-                    email='stu@sdent.com',
+                    email='stu@dent.com',
                     password='student_user',
                     confirm='student_user'
                 ),
                 follow_redirects=True
             )
             self.assertIn(
-                b'Welcome, <em>stu@sdent.com</em>!',
+                b'Welcome, <em>stu@dent.com</em>!',
                 response.data
             )
             self.assertIn(
-                b'<li><a href="/students/">Dashboard</a></li>',
+                b'<li><a href="/student/classes">View Classes</a></li>',
                 response.data
             )
-            self.assertTrue(current_user.email == "stu@sdent.com")
+            self.assertTrue(current_user.email == "stu@dent.com")
             self.assertTrue(current_user.is_authenticated)
             self.assertTrue(current_user.is_active)
             self.assertFalse(current_user.is_anonymous())
             self.assertTrue(current_user.is_student())
             self.assertFalse(current_user.is_teacher())
             self.assertFalse(current_user.is_admin())
+            self.assertEqual(response.status_code, 200)
+
+    def test_teacher_login(self):
+        # Ensure login behaves correctly.
+        with self.client:
+            response = self.client.post(
+                '/login',
+                data=dict(
+                    email='student@student.com',
+                    password='student_user',
+                    confirm='student_user'
+                ),
+                follow_redirects=True
+            )
+            self.assertIn(
+                b'Welcome, <em>student@student.com</em>!',
+                response.data
+            )
+            self.assertIn(
+                b'<li><a href="/student/classes">View Classes</a></li>',
+                response.data
+            )
+            self.assertTrue(current_user.email == "student@student.com")
+            self.assertTrue(current_user.is_authenticated)
+            self.assertTrue(current_user.is_active)
+            self.assertFalse(current_user.is_anonymous())
+            self.assertTrue(current_user.is_student())
+            self.assertFalse(current_user.is_teacher())
+            self.assertFalse(current_user.is_admin())
+            self.assertEqual(response.status_code, 200)
+
+    def test_student_classes(self):
+        # Ensure a student can view all classes s/he are taking.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='student@student.com',
+                    password='student_user',
+                    confirm='student_user'
+                ),
+                follow_redirects=True
+            )
+            response = self.client.get('/student/classes')
+            self.assertIn(
+                b'<h1>All Classes</h1>',
+                response.data
+            )
+            self.assertIn(
+                b'<p>You are not taking any classes.</p>',
+                response.data
+            )
             self.assertEqual(response.status_code, 200)
 
 

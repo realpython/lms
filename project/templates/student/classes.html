@@ -1,0 +1,26 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="body-content">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>All Classes</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+        {% if classes %}
+          <ul>
+            {% for class in classes %}
+              <li><a href="{{ url_for('teacher.show_single_class', class_id=class.id) }}">{{ class.name }}</a></li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>You are not taking any classes.</p>
+        {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
