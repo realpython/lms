@@ -2,6 +2,7 @@
 
 
 import unittest
+import datetime
 
 from flask.ext.login import current_user
 
@@ -27,7 +28,7 @@ class TestTeacherBlueprint(BaseTestCase):
                 response.data
             )
             self.assertIn(
-                b'<li><a href="/teacher/2/classes/">View Classes</a></li>',
+                b'<li><a href="/teacher/classes/">View Classes</a></li>',
                 response.data
             )
             self.assertTrue(current_user.email == "teacher@teacher.com")
@@ -39,8 +40,8 @@ class TestTeacherBlueprint(BaseTestCase):
             self.assertFalse(current_user.is_admin())
             self.assertEqual(response.status_code, 200)
 
-    def test_teacher_dashboard(self):
-        # Ensure dashboard behaves correctly.
+    def test_teacher_classes(self):
+        # Ensure classes displays all classes.
         with self.client:
             self.client.post(
                 '/login',
@@ -51,13 +52,65 @@ class TestTeacherBlueprint(BaseTestCase):
                 ),
                 follow_redirects=True
             )
-            response = self.client.get('/teacher/2/classes/')
+            response = self.client.get('/teacher/classes/')
             self.assertIn(
                 b'<h1>All Classes</h1>',
                 response.data
             )
             self.assertIn(
                 b'<p>You are not teaching any classes.</p>',
+                response.data
+            )
+            self.assertEqual(response.status_code, 200)
+
+    def test_teacher_add_class_page(self):
+        # Ensure teacher can view add class page.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            response = self.client.get('/teacher/add_class/')
+            self.assertIn(
+                b'<h1>Add Class</h1>',
+                response.data
+            )
+            self.assertEqual(response.status_code, 200)
+
+    def test_teacher_add_class(self):
+        # Ensure teacher can add a new classes.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            response = self.client.post(
+                '/teacher/add_class/',
+                data=dict(
+                    name='Music Appreciation',
+                    description='This class teaches you how to understand \
+                                 what you are hearing.',
+                    start_date='2015-11-06',
+                    end_date='2015-11-07'
+                ),
+                follow_redirects=True
+            )
+            self.assertIn(
+                b'<h1>All Classes</h1>',
+                response.data
+            )
+            self.assertIn(
+                b'Music Appreciation',
                 response.data
             )
             self.assertEqual(response.status_code, 200)

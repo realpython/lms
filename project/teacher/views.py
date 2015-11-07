@@ -33,20 +33,20 @@ def get_classes(user_id):
 ##########
 
 
-@teacher_blueprint.route('/teacher/<int:user_id>/classes/')
+@teacher_blueprint.route('/teacher/classes/')
 @login_required
-def classes(user_id):
+def classes():
     return render_template(
         '/teacher/classes.html', classes=get_classes(current_user.get_id())
     )
 
 
 @teacher_blueprint.route(
-    '/teacher/<int:user_id>/class/',
+    '/teacher/add_class/',
     methods=['GET', 'POST']
 )
 @login_required
-def add_class(user_id):
+def add_class():
     form = AddClassForm(request.form)
     if form.validate_on_submit():
         new_class = Class(
@@ -60,5 +60,5 @@ def add_class(user_id):
         db.session.commit()
 
         flash('Thank you for adding a new class.', 'success')
-        return redirect('/teacher/{0}/classes'.format(current_user.get_id()))
+        return redirect('/teacher/classes'.format(current_user.get_id()))
     return render_template('/teacher/class.html', form=form)
