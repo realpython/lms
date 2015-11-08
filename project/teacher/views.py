@@ -90,7 +90,6 @@ def add_course():
         )
         db.session.add(new_course)
         db.session.commit()
-
         flash('Thank you for adding a new course.', 'success')
         return redirect('/teacher/courses')
     return render_template('/teacher/add.html', form=form)
