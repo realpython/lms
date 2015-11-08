@@ -11,7 +11,7 @@ from flask.ext.login import current_user
 
 from project import db
 from project.models import Course, User
-from project.student.forms import AddCourseForm
+# from project.student.forms import AddCourseForm
 
 
 ##########

@@ -14,7 +14,6 @@ class BaseTestCase(TestCase):
         return app
 
     def setUp(self):
-        db.session.remove()
         db.create_all()
         studentUser = User(
             email="student@student.com",
