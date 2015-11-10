@@ -36,6 +36,10 @@ def get_single_course(course_name):
     return Course.query.filter_by(name=course_name).first()
 
 
+def get_student_courses(user_id):
+    return Course.query.filter_by(id=user_id).all()
+
+
 ##########
 # routes #
 ##########
@@ -45,7 +49,8 @@ def get_single_course(course_name):
 @login_required
 def show_courses():
     return render_template(
-        '/student/courses.html'
+        '/student/courses.html',
+        student_courses=get_student_courses(current_user.get_id())
     )
 
 

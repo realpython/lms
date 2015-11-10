@@ -2,8 +2,8 @@
 
 ## Students
 
-1. Students can add a course
-1. Students have courses
+1. Add tests!
+1. Students cannot add the same course that they are already taking
 1. Students can view an individual course
 1. Add validate_student decorator
 
