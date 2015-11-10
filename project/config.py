@@ -21,7 +21,7 @@ class DevelopmentConfig(BaseConfig):
     WTF_CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'dev.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    DEBUG_TB_ENABLED = True
+    DEBUG_TB_ENABLED = False
 
 
 class TestingConfig(BaseConfig):

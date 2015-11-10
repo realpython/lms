@@ -27,9 +27,7 @@ student_blueprint = Blueprint('student', __name__,)
 ###########
 
 def get_all_courses():
-    courses = Course.query.all()
-    if courses:
-        return courses
+    return Course.query.all()
 
 
 def get_single_course(course_name):
