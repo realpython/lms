@@ -38,6 +38,18 @@ def get_student_courses(user_id):
     return Course.query.filter_by(id=user_id).all()
 
 
+def get_new_courses():
+    """
+    returns a list with only the courses that
+    the student is NOT currently taking
+    """
+    # current_courses = get_student_courses(current_user.get_id())
+    # all_courses = get_all_courses()
+    # for course in current_courses:
+    #     all_courses.remove(course)
+    # return all_courses
+
+
 ##########
 # routes #
 ##########
