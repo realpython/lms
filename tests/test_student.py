@@ -167,6 +167,27 @@ class TestStudentBlueprint(BaseTestCase):
             )
             self.assertEqual(response.status_code, 200)
 
+    def test_validate_student_decorator(self):
+        # Ensure a user has to be a student to view all courses.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            response = self.client.get(
+                '/student/courses',
+                follow_redirects=True
+            )
+            self.assertIn(
+                b'You do not have the correct permissions to view that page.',
+                response.data
+            )
+            self.assertEqual(response.status_code, 200)
 
 
 if __name__ == '__main__':

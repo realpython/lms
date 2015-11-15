@@ -5,7 +5,8 @@
 # imports #
 ###########
 
-from flask import render_template, Blueprint, request, flash, redirect
+from functools import wraps
+from flask import render_template, Blueprint, request, flash, redirect, url_for
 from flask.ext.login import login_required
 from flask.ext.login import current_user
 
@@ -50,6 +51,19 @@ def get_new_courses():
     # return all_courses
 
 
+def validate_student(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.is_student() is False:
+            flash(
+                'You do not have the correct permissions to view that page.',
+                'warning'
+            )
+            return redirect(url_for('user.login', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 ##########
 # routes #
 ##########
@@ -57,6 +71,7 @@ def get_new_courses():
 
 @student_blueprint.route('/student/courses')
 @login_required
+@validate_student
 def show_courses():
     return render_template(
         '/student/courses.html',
@@ -69,6 +84,7 @@ def show_courses():
     methods=['GET', 'POST']
 )
 @login_required
+@validate_student
 def add_course():
     form = AddCourseForm(request.form)
     form.courses.choices = [
