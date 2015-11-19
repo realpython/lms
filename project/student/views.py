@@ -31,24 +31,16 @@ def get_all_courses():
     return Course.query.all()
 
 
-def get_single_course(course_name):
+def get_single_course(course_id):
+    return Course.query.filter_by(id=course_id).first()
+
+
+def get_single_course_name(course_name):
     return Course.query.filter_by(name=course_name).first()
 
 
 def get_student_courses(user_id):
     return Course.query.filter_by(id=user_id).all()
-
-
-def get_new_courses():
-    """
-    returns a list with only the courses that
-    the student is NOT currently taking
-    """
-    # current_courses = get_student_courses(current_user.get_id())
-    # all_courses = get_all_courses()
-    # for course in current_courses:
-    #     all_courses.remove(course)
-    # return all_courses
 
 
 def validate_student(f):
@@ -79,6 +71,16 @@ def show_courses():
     )
 
 
+@student_blueprint.route('/student/course/<int:course_id>')
+@login_required
+@validate_student
+def show_single_course(course_id):
+    return render_template(
+        '/student/description.html',
+        single_course=get_single_course(course_id)
+    )
+
+
 @student_blueprint.route(
     '/student/add_course',
     methods=['GET', 'POST']
@@ -92,7 +94,7 @@ def add_course():
         for single_course in get_all_courses()
     ]
     if form.validate_on_submit():
-        course = get_single_course(form.courses.data)
+        course = get_single_course_name(form.courses.data)
         user = User.query.filter_by(id=current_user.get_id()).first()
         course.users.append(user)
         db.session.commit()

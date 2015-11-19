@@ -110,7 +110,7 @@ class TestStudentBlueprint(BaseTestCase):
             )
             self.assertEqual(response.status_code, 200)
 
-    def test_teacher_add_course(self):
+    def test_student_add_course(self):
         # Ensure a student can add a new course.
         with self.client:
             self.client.post(
@@ -162,7 +162,7 @@ class TestStudentBlueprint(BaseTestCase):
                 response.data
             )
             self.assertNotIn(
-                b'<p>You are not teaching any courses.</p>',
+                b'<p>You are not taking any courses.</p>',
                 response.data
             )
             self.assertEqual(response.status_code, 200)

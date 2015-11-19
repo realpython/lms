@@ -13,7 +13,7 @@
         {% if student_courses %}
           <ul>
             {% for course in student_courses %}
-              <li><a href="#">{{ course.name }}</a></li>
+              <li><a href="{{ url_for('student.show_single_course', course_id=course.id) }}">{{ course.name }}</a></li>
             {% endfor %}
           </ul>
         {% else %}
