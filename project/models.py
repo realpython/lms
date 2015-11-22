@@ -8,65 +8,10 @@ from project import db, bcrypt
 
 course_student_association_table = db.Table(
     'course_student_association',
-    db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+    db.metadata,
+    db.Column('student_id', db.Integer, db.ForeignKey('students.id')),
     db.Column('course_id', db.Integer, db.ForeignKey('courses.id'))
 )
-
-
-class User(db.Model):
-    """A user is a student."""
-
-    __tablename__ = "users"
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(255), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-    registered_on = db.Column(db.DateTime, nullable=False)
-    student = db.Column(db.Boolean, nullable=False, default=True)
-    teacher = db.Column(db.Boolean, nullable=False, default=False)
-    admin = db.Column(db.Boolean, nullable=False, default=False)
-
-    def __init__(self, email, password, student=True,
-                 teacher=False, admin=False):
-        self.email = email
-        self.password = bcrypt.generate_password_hash(password)
-        self.registered_on = datetime.datetime.now()
-        self.student = student
-        self.teacher = teacher
-        self.admin = admin
-
-    def is_authenticated(self):
-        return True
-
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return self.id
-
-    def is_student(self):
-        if self.student:
-            return True
-        else:
-            return False
-
-    def is_teacher(self):
-        if self.teacher:
-            return True
-        else:
-            return False
-
-    def is_admin(self):
-        if self.admin:
-            return True
-        else:
-            return False
-
-    def __repr__(self):
-        return '<User {0}>'.format(self.email)
 
 
 class Course(db.Model):
@@ -80,10 +25,11 @@ class Course(db.Model):
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
     teacher_id = db.Column(
-        db.Integer, db.ForeignKey('users.id'), nullable=False
+        db.Integer, db.ForeignKey('teachers.id'), nullable=False
     )
-    users = db.relationship(
-        'User',
+    teacher = db.relationship('Teacher', backref='courses')
+    students = db.relationship(
+        'Student',
         secondary=course_student_association_table,
         backref='courses'
     )
@@ -99,3 +45,99 @@ class Course(db.Model):
 
     def __repr__(self):
         return '<Class {0}>'.format(self.name)
+
+
+class User(db.Model):
+
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    registered_on = db.Column(db.DateTime, nullable=False)
+    user_role = db.Column(db.String(15))
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'users',
+        'polymorphic_on': user_role
+    }
+
+    def __init__(self, email, password):
+        self.email = email
+        self.password = bcrypt.generate_password_hash(password)
+        self.registered_on = datetime.datetime.now()
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
+
+    def is_student(self):
+        if self.user_role == 'student':
+            return True
+        else:
+            return False
+
+    def is_teacher(self):
+        if self.user_role == 'teacher':
+            return True
+        else:
+            return False
+
+    def is_admin(self):
+        if self.user_role == 'admin':
+            return True
+        else:
+            return False
+
+    def __repr__(self):
+        return '<User {0}>'.format(self.email)
+
+
+class Student(User):
+
+    __tablename__ = "students"
+
+    id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'student'
+    }
+
+    def __repr__(self):
+        return '<Student {0}>'.format(self.email)
+
+
+class Teacher(User):
+
+    __tablename__ = "teachers"
+
+    id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'teacher'
+    }
+
+    def __repr__(self):
+        return '<Teacher {0}>'.format(self.email)
+
+
+class Admin(User):
+
+    __tablename__ = "admins"
+
+    id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'admin'
+    }
+
+    def __repr__(self):
+        return '<Admin {0}>'.format(self.email)

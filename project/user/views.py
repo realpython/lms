@@ -10,7 +10,7 @@ from flask import render_template, Blueprint, url_for, \
 from flask.ext.login import login_user, logout_user, login_required
 
 from project import bcrypt, db
-from project.models import User
+from project.models import User, Student
 from project.user.forms import LoginForm, RegisterForm
 
 ##########
@@ -28,7 +28,7 @@ user_blueprint = Blueprint('user', __name__,)
 def register():
     form = RegisterForm(request.form)
     if form.validate_on_submit():
-        user = User(
+        user = Student(
             email=form.email.data,
             password=form.password.data
         )

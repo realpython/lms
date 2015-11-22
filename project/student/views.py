@@ -13,7 +13,7 @@ from flask.ext.login import current_user
 
 from project.student.forms import AddCourseForm
 from project import db
-from project.models import Course, User
+from project.models import Course, Student
 
 
 ##########
@@ -95,8 +95,8 @@ def add_course():
     ]
     if form.validate_on_submit():
         course = get_single_course_name(form.courses.data)
-        user = User.query.filter_by(id=current_user.get_id()).first()
-        course.users.append(user)
+        user = Student.query.filter_by(id=current_user.get_id()).first()
+        course.students.append(user)
         db.session.commit()
         flash('Thank you for adding a new course.', 'success')
         return redirect('/student/courses')

@@ -6,9 +6,9 @@
   <div class="row">
     {% if current_user.is_authenticated %}
       <h1>Welcome, <em>{{ current_user.email }}</em>!</h1>
-      <p>Student? {{ current_user.is_student() }}<p>
-      <p>Teacher? {{ current_user.is_teacher() }}</p>
-      <p>Admin? {{ current_user.is_admin() }}</p>
+      <p>Student? {{ current_user.user_role == 'student' }}<p>
+      <p>Teacher? {{ current_user.user_role == 'teacher' }}</p>
+      <p>Admin? {{ current_user.user_role == 'admin' }}</p>
     {% else %}
       <h1>Welcome!</h1>
     {% endif %}

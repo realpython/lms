@@ -17,7 +17,7 @@ COV = coverage.coverage(
 COV.start()
 
 from project import app, db
-from project.models import User, Course
+from project.models import Student, Teacher, Admin, Course
 
 
 migrate = Migrate(app, db)
@@ -69,28 +69,19 @@ def drop_db():
 @manager.command
 def create_users():
     """Creates sample users."""
-    student = User(
+    student = Student(
         email='student@student.com',
-        password='student',
-        student=True,
-        teacher=False,
-        admin=False
+        password='student'
     )
     db.session.add(student)
-    teacher = User(
+    teacher = Teacher(
         email='teacher@teacher.com',
-        password='teacher',
-        student=False,
-        teacher=True,
-        admin=False
+        password='teacher'
     )
     db.session.add(teacher)
-    admin = User(
+    admin = Admin(
         email='ad@min.com',
-        password='admin',
-        student=False,
-        teacher=False,
-        admin=True
+        password='admin'
     )
     db.session.add(admin)
     db.session.commit()
@@ -99,7 +90,7 @@ def create_users():
 @manager.command
 def create_data():
     """Creates sample data."""
-    teacher = User.query.filter_by(email='teacher@teacher.com').first()
+    teacher = Teacher.query.filter_by(email='teacher@teacher.com').first()
     first_course = Course(
         name='Philosophy 101',
         description='From Plato to Socrates...',
