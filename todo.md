@@ -1,9 +1,5 @@
 # Todo
 
-## Models
-
-1. Refactor and normalize models/schema
-
 ## Students
 
 1. Students cannot add a course that they are already taking
