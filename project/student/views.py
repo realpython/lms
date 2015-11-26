@@ -39,8 +39,8 @@ def get_single_course_name(course_name):
     return Course.query.filter_by(name=course_name).first()
 
 
-def get_student_courses(user_id):
-    return Course.query.filter_by(id=user_id).all()
+def get_student(user_id):
+    return Student.query.filter_by(id=user_id).all()
 
 
 def validate_student(f):
@@ -65,10 +65,7 @@ def validate_student(f):
 @login_required
 @validate_student
 def show_courses():
-    return render_template(
-        '/student/courses.html',
-        student_courses=get_student_courses(current_user.get_id())
-    )
+    return render_template('/student/courses.html')
 
 
 @student_blueprint.route('/student/course/<int:course_id>')
