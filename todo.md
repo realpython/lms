@@ -1,10 +1,5 @@
 # Todo
 
-## Students
-
-1. Students cannot add a course that they are already taking
-1. Students can view an individual course
-
 ## Admin
 
 1. Admin have full API access
