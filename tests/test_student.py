@@ -91,8 +91,8 @@ class TestStudentBlueprint(BaseTestCase):
             )
             self.assertEqual(response.status_code, 200)
 
-    def test_student_add_course_page(self):
-        # Ensure a student can view add course page.
+    def test_student_add_course_page_without_courses(self):
+        # Ensure a student can view add course page with no available courses.
         with self.client:
             self.client.post(
                 '/login',
@@ -106,6 +106,59 @@ class TestStudentBlueprint(BaseTestCase):
             response = self.client.get('/student/add_course')
             self.assertIn(
                 b'<h1>Add Course</h1>',
+                response.data
+            )
+            self.assertIn(
+                b'No new courses at this time.',
+                response.data
+            )
+            self.assertEqual(response.status_code, 200)
+
+    def test_student_add_course_page_with_courses(self):
+        # Ensure a student can view add course page with available courses.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.post(
+                '/teacher/add_course',
+                data=dict(
+                    name='Music Appreciation',
+                    subject='Liberal Arts',
+                    description='This course teaches you how to understand \
+                                 what you are hearing.',
+                    start_date='2015-11-06',
+                    end_date='2015-11-07'
+                ),
+                follow_redirects=True
+            )
+            self.client.get('/logout', follow_redirects=True)
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='student@student.com',
+                    password='student_user',
+                    confirm='student_user'
+                ),
+                follow_redirects=True
+            )
+            response = self.client.get('/student/add_course')
+            self.assertIn(
+                b'<h1>Add Course</h1>',
+                response.data
+            )
+            self.assertIn(
+                b'Music Appreciation',
+                response.data
+            )
+            self.assertNotIn(
+                b'No new courses at this time.',
                 response.data
             )
             self.assertEqual(response.status_code, 200)
@@ -163,6 +216,56 @@ class TestStudentBlueprint(BaseTestCase):
             )
             self.assertNotIn(
                 b'<p>You are not taking any courses.</p>',
+                response.data
+            )
+            self.assertEqual(response.status_code, 200)
+
+    def test_student_view_course(self):
+        # Ensure a student can view an individual course.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.post(
+                '/teacher/add_course',
+                data=dict(
+                    name='Music Appreciation',
+                    subject='Liberal Arts',
+                    description='This course teaches you how to understand \
+                                 what you are hearing.',
+                    start_date='2015-11-06',
+                    end_date='2015-11-07'
+                ),
+                follow_redirects=True
+            )
+            self.client.get('/logout', follow_redirects=True)
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='student@student.com',
+                    password='student_user',
+                    confirm='student_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.post(
+                '/student/add_course',
+                data=dict(courses='Music Appreciation'),
+                follow_redirects=True
+            )
+            response = self.client.get('/student/course/1')
+            self.assertIn(
+                b'<h1>Music Appreciation</h1>',
+                response.data
+            )
+            self.assertIn(
+                b'This course teaches you how to understand',
                 response.data
             )
             self.assertEqual(response.status_code, 200)

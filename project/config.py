@@ -21,18 +21,17 @@ class DevelopmentConfig(BaseConfig):
     WTF_CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'dev.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    DEBUG_TB_ENABLED = True
+    DEBUG_TB_ENABLED = False  # change to true to enable Debug toolbar
 
 
 class TestingConfig(BaseConfig):
     """Testing configuration."""
-    DEBUG = False
+    DEBUG = True
     TESTING = True
     BCRYPT_LOG_ROUNDS = 1
     WTF_CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    DEBUG_TB_ENABLED = False
 
 
 class ProductionConfig(BaseConfig):

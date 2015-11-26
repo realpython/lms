@@ -12,21 +12,17 @@
   <div class="row">
     <div class="col-md-4">
 
-    <form class="form" role="form" method="post" action="">
-
-      {{ form.csrf_token }}
-      {{ form.hidden_tag() }}
-      {{ wtf.form_errors(form, hiddens="only") }}
-
-      <div>
-
-        {{ wtf.form_field(form.courses) }}
-
-        <button class="btn btn-success" type="submit">Add Course!</button>
-
-      </div>
-
-    </form>
+    {% if form %}
+      <form class="form" role="form" method="post" action="">
+        {{ form.csrf_token }}
+        {{ form.hidden_tag() }}
+        {{ wtf.form_errors(form, hiddens="only") }}
+        <div>
+          {{ wtf.form_field(form.courses) }}
+          <button class="btn btn-success" type="submit">Add Course!</button>
+        </div>
+      </form>
+    {% endif %}
 
     </div>
   </div>

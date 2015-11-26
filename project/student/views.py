@@ -40,7 +40,12 @@ def get_single_course_name(course_name):
 
 
 def get_student(user_id):
-    return Student.query.filter_by(id=user_id).all()
+    return Student.query.filter_by(id=user_id).first()
+
+
+def get_available_courses(user_id):
+    student_courses = get_student(user_id).courses
+    return list(set(get_all_courses()) - set(student_courses))
 
 
 def validate_student(f):
@@ -85,16 +90,21 @@ def show_single_course(course_id):
 @login_required
 @validate_student
 def add_course():
-    form = AddCourseForm(request.form)
-    form.courses.choices = [
-        (single_course.name, single_course.name)
-        for single_course in get_all_courses()
-    ]
-    if form.validate_on_submit():
-        course = get_single_course_name(form.courses.data)
-        user = Student.query.filter_by(id=current_user.get_id()).first()
-        course.students.append(user)
-        db.session.commit()
-        flash('Thank you for adding a new course.', 'success')
-        return redirect('/student/courses')
-    return render_template('/student/add.html', form=form)
+    available_courses = get_available_courses(current_user.get_id())
+    if available_courses:
+        form = AddCourseForm(request.form)
+        form.courses.choices = [
+            (single_course.name, single_course.name)
+            for single_course in available_courses
+        ]
+        if form.validate_on_submit():
+            course = get_single_course_name(form.courses.data)
+            user = Student.query.filter_by(id=current_user.get_id()).first()
+            course.students.append(user)
+            db.session.commit()
+            flash('Thank you for adding a new course.', 'success')
+            return redirect('/student/courses')
+        return render_template('/student/add.html', form=form)
+    else:
+        flash('No new courses at this time.', 'warning')
+        return render_template('/student/add.html')
