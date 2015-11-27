@@ -5,8 +5,10 @@
 # imports #
 ###########
 
-from flask import render_template, Blueprint
+from functools import wraps
+from flask import render_template, Blueprint, request, flash, redirect, url_for
 from flask.ext.login import login_required
+from flask.ext.login import current_user
 
 
 ##########
@@ -16,12 +18,23 @@ from flask.ext.login import login_required
 admin_blueprint = Blueprint('admin', __name__,)
 
 
+###########
+# helpers #
+###########
+
+def validate_admin(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.is_admin() is False:
+            flash(
+                'You do not have the correct permissions to view that page.',
+                'warning'
+            )
+            return redirect(url_for('user.login', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 ##########
 # routes #
 ##########
-
-
-@admin_blueprint.route('/admin/')
-@login_required
-def admin_home():
-    return render_template('/admin/home.html')

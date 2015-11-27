@@ -27,7 +27,6 @@ class TestUserBlueprint(BaseTestCase):
             )
             self.assertIn(b'Welcome, <em>admin@admin.com</em>!', response.data)
             self.assertIn(b'Logout', response.data)
-            self.assertIn(b'Dashboard', response.data)
             self.assertTrue(current_user.email == "admin@admin.com")
             self.assertTrue(current_user.is_active())
             self.assertEqual(response.status_code, 200)
