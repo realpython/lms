@@ -131,10 +131,7 @@ class TestTeacherBlueprint(BaseTestCase):
                 b'<h1>All Courses</h1>',
                 response.data
             )
-            self.assertIn(
-                b'Music Appreciation',
-                response.data
-            )
+            self.assertIn(b'Music Appreciation', response.data)
             self.assertNotIn(
                 b'<p>You are not teaching any courses.</p>',
                 response.data
@@ -179,10 +176,7 @@ class TestTeacherBlueprint(BaseTestCase):
                 b'<h1>All Courses</h1>',
                 response.data
             )
-            self.assertNotIn(
-                b'Music Appreciation',
-                response.data
-            )
+            self.assertNotIn(b'<h1>Music Appreciation</h1>', response.data)
             self.assertIn(
                 b'<p>You are not teaching any courses.</p>',
                 response.data
@@ -214,10 +208,7 @@ class TestTeacherBlueprint(BaseTestCase):
                 follow_redirects=True
             )
             response = self.client.get('/teacher/course/1')
-            self.assertIn(
-                b'<h1>Music Appreciation</h1>',
-                response.data
-            )
+            self.assertIn(b'<h1>Music Appreciation</h1>', response.data)
             self.assertIn(
                 b'This course teaches you how to understand',
                 response.data
@@ -259,52 +250,9 @@ class TestTeacherBlueprint(BaseTestCase):
                 ),
                 follow_redirects=True
             )
-            self.assertIn(
-                b'<h1>Art Appreciation</h1>',
-                response.data
-            )
-            self.assertIn(
-                b'From here to there.',
-                response.data
-            )
+            self.assertIn(b'<h1>Art Appreciation</h1>', response.data)
+            self.assertIn(b'From here to there.', response.data)
             self.assertEqual(response.status_code, 200)
-
-    def test_teacher_edit_course_page(self):
-        # Ensure a teacher can view edit course page.
-        with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='teacher@teacher.com',
-                    password='teacher_user',
-                    confirm='teacher_user'
-                ),
-                follow_redirects=True
-            )
-            self.client.post(
-                '/teacher/add_course',
-                data=dict(
-                    name='Music Appreciation',
-                    subject='Liberal Arts',
-                    description='This course teaches you how to understand \
-                                 what you are hearing.',
-                    start_date='2015-11-06',
-                    end_date='2015-11-07'
-                ),
-                follow_redirects=True
-            )
-            response = self.client.get('/teacher/update_course/1')
-            self.assertIn(
-                b'<h1>Update Course</h1>',
-                response.data
-            )
-            self.assertIn(
-                b'<input class="form-control" id="name" \
-name="name" required type="text" value="Music Appreciation">',
-                response.data
-            )
-            self.assertEqual(response.status_code, 200)
-
 
 if __name__ == '__main__':
     unittest.main()

@@ -23,6 +23,7 @@
                 <th>End Date</th>
                 <th>Taught By</th>
                 <th>Students</th>
+                <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -42,6 +43,7 @@
                         {% endfor %}
                       </ul>
                     </td>
+                    <td><a href="{{ url_for('admin.update_course', course_id=course.id) }}" data-toggle="tooltip" title="Edit Course"><span class="glyphicon glyphicon-edit"></span></a></td>
                   </tr>
                 {% endfor %}
               </tbody>
