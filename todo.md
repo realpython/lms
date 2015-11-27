@@ -11,6 +11,7 @@
 ## Other
 
 1. DRY all tests
+1. DRY the APIs
 1. Add assignments
 1. Add quizes
 1. Add grades

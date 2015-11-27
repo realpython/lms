@@ -37,7 +37,7 @@ class TestAdminBlueprint(BaseTestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_admin_dashboard(self):
-        # Ensure a admin can view the admin dashboard.
+        # Ensure an admin can view the admin dashboard.
         with self.client:
             self.client.post(
                 '/login',
@@ -52,14 +52,58 @@ class TestAdminBlueprint(BaseTestCase):
                 '/admin/dashboard',
                 follow_redirects=True
             )
-            self.assertIn(
-                b'<h1>Dashboard</h1>',
-                response.data
+            self.assertIn(b'<h1>Dashboard</h1>', response.data)
+            self.assertIn(b'<p>No courses!</p>', response.data)
+            self.assertEqual(response.status_code, 200)
+
+    def test_admin_dashboard_with_courses(self):
+        # Ensure an admin can view courses on the admin dashboard.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
             )
+            self.client.post(
+                '/teacher/add_course',
+                data=dict(
+                    name='Music Appreciation',
+                    subject='Liberal Arts',
+                    description='This course teaches you how to understand \
+                                 what you are hearing.',
+                    start_date='2015-11-06',
+                    end_date='2015-11-07'
+                ),
+                follow_redirects=True
+            )
+            self.client.get('/logout')
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='admin@admin.com',
+                    password='admin_user',
+                    confirm='admin_user'
+                ),
+                follow_redirects=True
+            )
+            response = self.client.get(
+                '/admin/dashboard',
+                follow_redirects=True
+            )
+            self.assertIn(b'<h1>Dashboard</h1>', response.data)
+            self.assertIn(b'<h2>Courses</h2>', response.data)
+            self.assertIn(b'<table class="table">', response.data)
+            self.assertIn(b'<th scope="row">1</th>', response.data)
+            self.assertIn(b'<td>Music Appreciation</td>', response.data)
+            self.assertIn(b'<td>teacher@teacher.com</td>', response.data)
             self.assertEqual(response.status_code, 200)
 
     def test_validate_admin_decorator(self):
-        # Ensure a user has to be a admin to view the admin dashboard.
+        # Ensure a user has to be an admin to view the admin dashboard.
         with self.client:
             self.client.post(
                 '/login',

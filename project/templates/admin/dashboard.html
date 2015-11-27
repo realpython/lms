@@ -8,6 +8,49 @@
       <h1>Dashboard</h1>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Courses</h2>
+      {% if courses %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Subject</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Taught By</th>
+                <th>Students</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for course in courses %}
+                  <tr>
+                    <th scope="row">{{ course.id }}</th>
+                    <td>{{ course.name }}</td>
+                    <td>{{ course.description }}</td>
+                    <td>{{ course.subject }}</td>
+                    <td>{{ course.start_date }}</td>
+                    <td>{{ course.end_date }}</td>
+                    <td>{{ course.teacher.email }}</td>
+                    <td>
+                      <ul>
+                        {% for student in course.students %}
+                          <li>{{ student.email }}</li>
+                        {% endfor %}
+                      </ul>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+      {% else %}
+        <p>No courses!</p>
+    {% endif %}
+    </div>
+  </div>
 </div>
 
 {% endblock %}
