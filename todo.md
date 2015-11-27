@@ -3,6 +3,9 @@
 ## Admin
 
 1. Admin have full API access
+  - Classes
+  - Students
+  - Teachers
 1. Add validate_admin decorator
 
 ## Other

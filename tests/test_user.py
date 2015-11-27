@@ -26,6 +26,10 @@ class TestUserBlueprint(BaseTestCase):
                 follow_redirects=True
             )
             self.assertIn(b'Welcome, <em>admin@admin.com</em>!', response.data)
+            self.assertIn(
+                b'<li><a href="/admin/dashboard/">Dashboard</a></li>',
+                response.data
+            )
             self.assertIn(b'Logout', response.data)
             self.assertTrue(current_user.email == "admin@admin.com")
             self.assertTrue(current_user.is_active())

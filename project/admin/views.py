@@ -38,3 +38,10 @@ def validate_admin(f):
 ##########
 # routes #
 ##########
+
+
+@admin_blueprint.route('/admin/dashboard/')
+@login_required
+@validate_admin
+def dashboard():
+    return render_template('/admin/dashboard.html')
