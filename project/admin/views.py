@@ -6,7 +6,8 @@
 ###########
 
 from functools import wraps
-from flask import render_template, Blueprint, request, flash, redirect, url_for
+from flask import render_template, Blueprint, request, flash, redirect, \
+    url_for, jsonify
 from flask.ext.login import login_required
 from flask.ext.login import current_user
 
@@ -84,3 +85,16 @@ def update_course(course_id):
         form=form,
         single_course=get_single_course(course_id)
     )
+
+
+@admin_blueprint.route(
+    '/admin/course/<int:course_id>',
+    methods=['DELETE']
+)
+@login_required
+@validate_admin
+def delete_course(course_id):
+    course = get_single_course(course_id)
+    db.session.delete(course)
+    db.session.commit()
+    return jsonify({'test': 'test'})

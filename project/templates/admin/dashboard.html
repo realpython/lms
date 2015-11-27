@@ -43,7 +43,11 @@
                         {% endfor %}
                       </ul>
                     </td>
-                    <td><a href="{{ url_for('admin.update_course', course_id=course.id) }}" data-toggle="tooltip" title="Edit Course"><span class="glyphicon glyphicon-edit"></span></a></td>
+                    <td>
+                      <a href="{{ url_for('admin.update_course', course_id=course.id) }}" data-toggle="tooltip" title="Edit Course"><span class="glyphicon glyphicon-edit"></span></a>
+                      &nbsp;
+                      <a href="" data-toggle="tooltip" title="Delete Course" id="{{ course.id}}" class="delete-course"><span class="glyphicon glyphicon-remove"></span></a>
+                    </td>
                   </tr>
                 {% endfor %}
               </tbody>

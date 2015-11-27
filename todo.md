@@ -3,11 +3,22 @@
 ## Admin
 
 1. Admin have full API access
-  - Courses - read, update
+  - Courses - read, update, delete
   - Students
   - Teachers
 
 ## Other
+
+1. Add error handlers to db sessions:
+
+    ```python
+    try:
+        session.add(c)
+        session.commit()
+        return True
+    except sqlalchemy.exc.IntegrityError as err:
+        return False
+    ```
 
 1. DRY all tests
 1. DRY the APIs

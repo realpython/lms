@@ -225,5 +225,46 @@ name="name" required type="text" value="Music Appreciation">',
             self.assertIn(b'<td>teacher@teacher.com</td>', response.data)
             self.assertEqual(response.status_code, 200)
 
+    def test_admin_delete_course(self):
+        # Ensure a admin can delete an individual course.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.post(
+                '/teacher/add_course',
+                data=dict(
+                    name='Music Appreciation',
+                    subject='Liberal Arts',
+                    description='This course teaches you how to understand \
+                                 what you are hearing.',
+                    start_date='2015-11-06',
+                    end_date='2015-11-07'
+                ),
+                follow_redirects=True
+            )
+            self.client.get('/logout')
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='admin@admin.com',
+                    password='admin_user',
+                    confirm='admin_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.delete('/admin/course/1')
+            response = self.client.get('/admin/dashboard/')
+            self.assertIn(b'<h1>Dashboard</h1>', response.data)
+            self.assertIn(b'<p>No courses!</p>', response.data)
+            self.assertNotIn(b'<td>Music Appreciation</td>', response.data)
+            self.assertEqual(response.status_code, 200)
+
 if __name__ == '__main__':
     unittest.main()
