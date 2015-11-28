@@ -3,7 +3,7 @@
 ## Admin
 
 1. Admin have full API access
-  - Courses - read, update, delete
+  - Courses - create, read, update, delete
   - Students
   - Teachers
 
@@ -20,8 +20,9 @@
         return False
     ```
 
-1. DRY all tests
-1. DRY the APIs
+1. DRY all tests (add helpers, check db for changes)
+1. DRY the APIs (one central API?, refactor into proper REST structure?)
+1. Format dates
 1. Add assignments
 1. Add quizes
 1. Add grades

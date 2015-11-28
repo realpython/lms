@@ -13,7 +13,7 @@ from flask.ext.login import current_user
 
 from project import db
 from project.models import Course, Teacher, Student
-from project.admin.forms import UpdateCourseForm
+from project.admin.forms import UpdateCourseForm, AddCourseForm
 
 
 ##########
@@ -73,6 +73,34 @@ def dashboard():
 
 
 @admin_blueprint.route(
+    '/admin/add_course',
+    methods=['GET', 'POST']
+)
+@login_required
+@validate_admin
+def add_course():
+    form = AddCourseForm(request.form)
+    form.teachers.choices = [
+        (teacher.email, teacher.email)
+        for teacher in get_teachers()
+    ]
+    if form.validate_on_submit():
+        new_course = Course(
+            name=form.name.data,
+            description=form.description.data,
+            subject=form.subject.data,
+            start_date=form.start_date.data,
+            end_date=form.end_date.data,
+            teacher_id=get_teacher_id(form.teachers.data)
+        )
+        db.session.add(new_course)
+        db.session.commit()
+        flash('Thank you for adding a new course.', 'success')
+        return redirect('/admin/dashboard')
+    return render_template('/admin/add.html', form=form)
+
+
+@admin_blueprint.route(
     '/admin/update_course/<int:course_id>',
     methods=['GET', 'POST']
 )
@@ -85,14 +113,13 @@ def update_course(course_id):
         for teacher in get_teachers()
     ]
     if form.validate_on_submit():
-        teacher_id = get_teacher_id(form.teachers.data)
         update_course = get_single_course(course_id)
         update_course.name = form.name.data
         update_course.description = form.description.data
         update_course.subject = form.subject.data
         update_course.start_date = form.start_date.data
         update_course.end_date = form.end_date.data
-        update_course.teacher_id = teacher_id
+        update_course.teacher_id = get_teacher_id(form.teachers.data)
         db.session.commit()
         flash('Course updated. Thank you', 'success')
         return redirect('/admin/dashboard'.format(course_id))
