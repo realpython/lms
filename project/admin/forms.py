@@ -2,7 +2,8 @@
 
 
 from flask_wtf import Form
-from wtforms import TextField, DateField, TextAreaField, SelectField
+from wtforms import TextField, DateField, TextAreaField, SelectField, \
+    SelectMultipleField
 from wtforms.validators import DataRequired, Length
 
 
