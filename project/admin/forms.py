@@ -2,7 +2,7 @@
 
 
 from flask_wtf import Form
-from wtforms import TextField, DateField, TextAreaField
+from wtforms import TextField, DateField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Length
 
 
@@ -26,3 +26,4 @@ class UpdateCourseForm(Form):
         'End Date',
         validators=[DataRequired()]
     )
+    teachers = SelectField('Taught By')

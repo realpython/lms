@@ -12,8 +12,8 @@ from flask.ext.login import login_required
 from flask.ext.login import current_user
 
 from project import db
-from project.models import Course
-from project.teacher.forms import UpdateCourseForm
+from project.models import Course, Teacher
+from project.admin.forms import UpdateCourseForm
 
 
 ##########
@@ -29,6 +29,10 @@ admin_blueprint = Blueprint('admin', __name__,)
 
 def get_courses():
     return Course.query.all()
+
+
+def get_teachers():
+    return Teacher.query.all()
 
 
 def get_single_course(course_id):
@@ -67,6 +71,10 @@ def dashboard():
 @validate_admin
 def update_course(course_id):
     form = UpdateCourseForm(request.form)
+    form.teachers.choices = [
+        (teacher.email, teacher.email)
+        for teacher in get_teachers()
+    ]
     if form.validate_on_submit():
         update_course = get_single_course(course_id)
 

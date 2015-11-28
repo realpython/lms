@@ -26,6 +26,7 @@
         {{ wtf.form_field(form.subject, value=single_course.subject) }}
         {{ wtf.form_field(form.start_date, type="date", value=single_course.start_date.strftime('%Y-%m-%d')) }}
         {{ wtf.form_field(form.end_date, type="date", value=single_course.end_date.strftime('%Y-%m-%d')) }}
+        {{ wtf.form_field(form.teachers) }}
 
         <button class="btn btn-success" type="submit">Update Course!</button>
 

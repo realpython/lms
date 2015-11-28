@@ -6,4 +6,4 @@ from wtforms import SelectField
 
 
 class AddCourseForm(Form):
-    courses = SelectField(u"Available Courses")
+    courses = SelectField(u'Available Courses')

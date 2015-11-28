@@ -10,9 +10,8 @@ from flask import render_template, Blueprint, request, flash, redirect, url_for
 from flask.ext.login import login_required
 from flask.ext.login import current_user
 
-
-from project.student.forms import AddCourseForm
 from project import db
+from project.student.forms import AddCourseForm
 from project.models import Course, Student
 
 

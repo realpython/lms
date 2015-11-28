@@ -204,7 +204,7 @@ name="name" required type="text" value="Music Appreciation">',
                 ),
                 follow_redirects=True
             )
-            self.client.get('/teacher/update_course/1')
+            self.client.get('/admin/update_course/1')
             response = self.client.post(
                 '/admin/update_course/1',
                 data=dict(
@@ -212,7 +212,8 @@ name="name" required type="text" value="Music Appreciation">',
                     subject='Liberal Arts',
                     description='From here to there.',
                     start_date='2015-11-06',
-                    end_date='2015-11-07'
+                    end_date='2015-11-07',
+                    teachers='teacher@teacher.com'
                 ),
                 follow_redirects=True
             )
