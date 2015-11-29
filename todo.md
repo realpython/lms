@@ -4,7 +4,7 @@
 
 1. Admin have full API access
   - Courses - create, read, update, delete
-  - Students
+  - Students - read
   - Teachers
 
 ## Other
@@ -22,7 +22,9 @@
 
 1. DRY all tests (add helpers, check db for changes)
 1. DRY the APIs (one central API?, refactor into proper REST structure?)
+1. Refactor blueprints into, well, "blueprints" folder
 1. Format dates
+1. Resend passwords
 1. Add assignments
 1. Add quizes
 1. Add grades

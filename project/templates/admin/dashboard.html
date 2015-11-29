@@ -8,6 +8,8 @@
       <h1>Dashboard</h1>
     </div>
   </div>
+
+  <!-- courses -->
   <div class="row">
     <div class="col-md-12">
       <h2>Courses
@@ -59,6 +61,47 @@
     {% endif %}
     </div>
   </div>
+  <!-- /courses -->
+
+  <!-- students -->
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Students</h2>
+      {% if students %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+                <th>Email</th>
+                <th>Registered On</th>
+                <th>Courses</th>
+                <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for student in students %}
+                  <tr>
+                    <th scope="row">{{ student.id }}</th>
+                    <td>{{ student.email }}</td>
+                    <td>{{ student.registered_on }}</td>
+                    <td>
+                      <ul>
+                        {% for course in student.courses %}
+                          <li>{{ course.name }}</li>
+                        {% endfor %}
+                      </ul>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+      {% else %}
+        <p>No students!</p>
+    {% endif %}
+    </div>
+  </div>
+  <!-- /students -->
+
 </div>
 
 {% endblock %}

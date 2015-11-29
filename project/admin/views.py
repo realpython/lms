@@ -69,7 +69,11 @@ def validate_admin(f):
 @login_required
 @validate_admin
 def dashboard():
-    return render_template('/admin/dashboard.html', courses=get_courses())
+    return render_template(
+        '/admin/dashboard.html',
+        courses=get_courses(),
+        students=get_students()
+    )
 
 
 @admin_blueprint.route(
