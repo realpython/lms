@@ -13,7 +13,8 @@ from flask.ext.login import current_user
 
 from project import db
 from project.models import Course, Teacher, Student
-from project.admin.forms import UpdateCourseForm, AddCourseForm
+from project.admin.forms import UpdateCourseForm, AddCourseForm, \
+    UpdateStudentForm
 
 
 ##########
@@ -46,6 +47,10 @@ def get_teacher_id(teacher_email):
 
 def get_single_course(course_id):
     return Course.query.filter_by(id=course_id).first()
+
+
+def get_single_student(student_id):
+    return Student.query.filter_by(id=student_id).first()
 
 
 def validate_admin(f):
@@ -128,7 +133,7 @@ def update_course(course_id):
         flash('Course updated. Thank you', 'success')
         return redirect('/admin/dashboard'.format(course_id))
     return render_template(
-        '/admin/update.html',
+        '/admin/update_course.html',
         form=form,
         single_course=get_single_course(course_id)
     )
@@ -145,3 +150,25 @@ def delete_course(course_id):
     db.session.delete(course)
     db.session.commit()
     return jsonify({'test': 'test'})
+
+
+@admin_blueprint.route(
+    '/admin/update_student/<int:student_id>',
+    methods=['GET', 'POST']
+)
+@login_required
+@validate_admin
+def update_student(student_id):
+    form = UpdateStudentForm(request.form)
+    if form.validate_on_submit():
+        update_student = get_single_student(student_id)
+        update_student.email = form.email.data
+        update_student.registered_on = form.registered_on.data
+        db.session.commit()
+        flash('Student updated. Thank you', 'success')
+        return redirect('/admin/dashboard'.format(student_id))
+    return render_template(
+        '/admin/update_student.html',
+        form=form,
+        single_student=get_single_student(student_id)
+    )

@@ -4,12 +4,13 @@
 
 1. Admin have full API access
   - Courses - create, read, update, delete
-  - Students - read
+  - Students - read, update
   - Teachers
+  - Users
 
 ## Other
 
-1. Add error handlers to db sessions:
+1. Add error handlers to db sessions (and test):
 
     ```python
     try:
@@ -20,6 +21,8 @@
         return False
     ```
 
+1. Split Admin dashboard into seperate pages (student, courses, etc.)
+1. Add courses to student form; add students to course form (for admin)
 1. DRY all tests (add helpers, check db for changes)
 1. DRY the APIs (one central API?, refactor into proper REST structure?)
 1. Refactor blueprints into, well, "blueprints" folder
@@ -29,3 +32,4 @@
 1. Add quizes
 1. Add grades
 1. Rules for when students can drop/remove courses? (or can this only come from an admin?)
+1. Add coveralls

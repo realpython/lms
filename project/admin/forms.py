@@ -3,7 +3,7 @@
 
 from flask_wtf import Form
 from wtforms import TextField, DateField, TextAreaField, SelectField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, Email
 
 
 class AddCourseForm(Form):
@@ -50,3 +50,14 @@ class UpdateCourseForm(Form):
         validators=[DataRequired()]
     )
     teachers = SelectField('Taught By')
+
+
+class UpdateStudentForm(Form):
+    email = TextField(
+        'Email Address',
+        validators=[DataRequired(), Email(), Length(min=6, max=40)]
+    )
+    registered_on = DateField(
+        'Registred On',
+        validators=[DataRequired()]
+    )
