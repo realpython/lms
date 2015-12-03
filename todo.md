@@ -3,7 +3,7 @@
 ## Admin
 
 1. Admin have full API access
-  - Courses - create, read, update, delete
+  - Courses - create, read, update
   - Students - read, update
   - Teachers
   - Users
@@ -33,3 +33,4 @@
 1. Add grades
 1. Rules for when students can drop/remove courses? (or can this only come from an admin?)
 1. Add coveralls
+1. Test for different versions of Python on travis
