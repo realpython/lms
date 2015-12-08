@@ -13,7 +13,7 @@ Just a basic LMS... built with brute force
 
 ### Set Environment Variables
 
-Update *config.py*, and then run:
+Update *project/config.py*, and then run:
 
 ```sh
 $ export APP_SETTINGS="project.config.DevelopmentConfig"

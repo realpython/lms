@@ -2,6 +2,7 @@
 
 
 import unittest
+import datetime
 
 from flask.ext.login import current_user
 
@@ -356,7 +357,7 @@ required type="text" value="student@student.com">',
             )
             self.assertIn(
                 b'<input class="form-control" id="registered_on" \
-name="registered_on" required type="date" value="2015-11-29">',
+name="registered_on" required type="date" value="',
                 response.data
             )
             self.assertEqual(response.status_code, 200)

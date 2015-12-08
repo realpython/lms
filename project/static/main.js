@@ -2,16 +2,16 @@ $(function() {
 
   // delete course
   $('.delete-course').on('click', function() {
+    var self = $(this);
     var result = confirm('Are you sure?');
     if (result) {
-      var courseId = $(this).attr('id');
-      console.log(courseId);
+      var courseId = self.attr('id');
       $.ajax({
         method: 'DELETE',
         url: '/admin/course/' + courseId
       })
       .done(function(data) {
-        console.log(data);
+        self.parent().parent().remove();
         location.reload();
       })
       .fail(function(err) {
@@ -22,4 +22,3 @@ $(function() {
   });
 
 });
-

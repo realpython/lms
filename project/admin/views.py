@@ -149,7 +149,7 @@ def delete_course(course_id):
     course = get_single_course(course_id)
     db.session.delete(course)
     db.session.commit()
-    # return jsonify({'test': 'test'})  # update me
+    return jsonify({'status': '{0} removed!'.format(course.name)})
 
 
 @admin_blueprint.route(
