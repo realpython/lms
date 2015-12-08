@@ -14,7 +14,7 @@ from flask.ext.login import current_user
 from project import db
 from project.models import Course, Teacher, Student
 from project.admin.forms import UpdateCourseForm, AddCourseForm, \
-    UpdateStudentForm
+    UpdateStudentForm, AddStudentForm
 
 
 ##########
@@ -106,7 +106,7 @@ def add_course():
         db.session.commit()
         flash('Thank you for adding a new course.', 'success')
         return redirect('/admin/dashboard')
-    return render_template('/admin/add.html', form=form)
+    return render_template('/admin/add_course.html', form=form)
 
 
 @admin_blueprint.route(
@@ -153,6 +153,26 @@ def delete_course(course_id):
 
 
 @admin_blueprint.route(
+    '/admin/add_student',
+    methods=['GET', 'POST']
+)
+@login_required
+@validate_admin
+def add_student():
+    form = AddStudentForm(request.form)
+    if form.validate_on_submit():
+        new_student = Student(
+            email=form.email.data,
+            password=form.password.data
+        )
+        db.session.add(new_student)
+        db.session.commit()
+        flash('Thank you for adding a new student.', 'success')
+        return redirect('/admin/dashboard')
+    return render_template('/admin/add_student.html', form=form)
+
+
+@admin_blueprint.route(
     '/admin/update_student/<int:student_id>',
     methods=['GET', 'POST']
 )
@@ -174,14 +194,14 @@ def update_student(student_id):
     )
 
 
-@admin_blueprint.route(
-    '/admin/student/<int:student_id>',
-    methods=['DELETE']
-)
-@login_required
-@validate_admin
-def delete_student(student_id):
-    student = get_single_student(student_id)
-    db.session.delete(student)
-    db.session.commit()
-    # return jsonify({'test': 'test'})  # update me
+# @admin_blueprint.route(
+#     '/admin/student/<int:student_id>',
+#     methods=['DELETE']
+# )
+# @login_required
+# @validate_admin
+# def delete_student(student_id):
+#     student = get_single_student(student_id)
+#     db.session.delete(student)
+#     db.session.commit()
+#     # return jsonify({'test': 'test'})  # update me

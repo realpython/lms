@@ -333,6 +333,56 @@ name="name" required type="text" value="Music Appreciation">',
             self.assertNotIn(b'<td>Music Appreciation</td>', response.data)
             self.assertEqual(response.status_code, 200)
 
+    def test_admin_add_student_page(self):
+        # Ensure an admin can view add student page.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='admin@admin.com',
+                    password='admin_user',
+                    confirm='admin_user'
+                ),
+                follow_redirects=True
+            )
+            response = self.client.get('/admin/add_student')
+            self.assertIn(
+                b'<h1>Add Student</h1>',
+                response.data
+            )
+            self.assertEqual(response.status_code, 200)
+
+    def test_admin_add_student(self):
+        # Ensure an admin can add a new student.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='admin@admin.com',
+                    password='admin_user',
+                    confirm='admin_user'
+                ),
+                follow_redirects=True
+            )
+            response = self.client.post(
+                '/admin/add_student',
+                data=dict(
+                    email='good@student.com',
+                    password='bad_student',
+                    confirm='bad_student'
+                ),
+                follow_redirects=True
+            )
+            self.assertIn(b'<h1>Dashboard</h1>', response.data)
+            self.assertIn(b'<h2>Courses', response.data)
+            self.assertIn(b'<table class="table">', response.data)
+            self.assertIn(b'<th scope="row">1</th>', response.data)
+            self.assertIn(b'<p>No courses!</p>', response.data)
+            self.assertIn(b'<h2>Students', response.data)
+            self.assertIn(b'<td>student@student.com</td>', response.data)
+            self.assertIn(b'<td>good@student.com</td>', response.data)
+            self.assertEqual(response.status_code, 200)
+
     def test_admin_edit_student_page(self):
         # Ensure a admin can view edit student page.
         with self.client:

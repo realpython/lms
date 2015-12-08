@@ -66,7 +66,8 @@
   <!-- students -->
   <div class="row">
     <div class="col-md-12">
-      <h2>Students</h2>
+      <h2>Students
+      <a href="{{ url_for('admin.add_student') }}" class="btn btn-primary btn-xs">Add</a>
       {% if students %}
         <table class="table">
           <thead>
