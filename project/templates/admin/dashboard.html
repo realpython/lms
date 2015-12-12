@@ -94,6 +94,8 @@
                     </td>
                     <td>
                       <a href="{{ url_for('admin.update_student', student_id=student.id) }}" data-toggle="tooltip" title="Edit Student"><span class="glyphicon glyphicon-edit"></span></a>
+                      &nbsp;
+                      <a href="" data-toggle="tooltip" title="Delete Student" id="{{ student.id}}" class="delete-student"><span class="glyphicon glyphicon-remove"></span></a>
                     </td>
                   </tr>
                 {% endfor %}

@@ -3,7 +3,7 @@
 ## Admin
 
 1. Admin have full API access
-  - Courses - create, read, update
+  - Courses - create, read, update, delete
   - Students - create, read, update
   - Teachers
   - Users
@@ -25,7 +25,7 @@
 1. Add courses to student form; add students to course form (for admin)
 1. DRY all tests (add helpers, check db for changes)
 1. DRY the APIs (one central API?, refactor into proper REST structure?)
-1. Refactor blueprints into, well, "blueprints" (or components) folder
+1. Refactor blueprints into, well, "blueprints" (or components) folder, and split project into front and back-end
 1. Format dates
 1. Resend password form
 1. Add assignments

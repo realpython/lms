@@ -2,7 +2,6 @@
 
 
 import unittest
-import datetime
 
 from flask.ext.login import current_user
 
@@ -440,6 +439,44 @@ name="registered_on" required type="date" value="',
             self.assertIn(b'<td>update@student.com</td>', response.data)
             self.assertIn(b'<td>2005-05-26 00:00:00</td>', response.data)
             self.assertNotIn(b'<td>student@student.com</td>', response.data)
+            self.assertEqual(response.status_code, 200)
+
+    def test_admin_delete_student(self):
+        # Ensure a admin can delete an individual student.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.post(
+                '/teacher/add_student',
+                data=dict(
+                    email='delete@student.com',
+                    password='delete_student',
+                    confirm='delete_student'
+                ),
+                follow_redirects=True
+            )
+            self.client.get('/logout')
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='admin@admin.com',
+                    password='admin_user',
+                    confirm='admin_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.delete('/admin/student/1')
+            response = self.client.get('/admin/dashboard/')
+            self.assertIn(b'<h1>Dashboard</h1>', response.data)
+            self.assertIn(b'<p>No students!</p>', response.data)
+            self.assertNotIn(b'<td>delete@student.com</td>', response.data)
             self.assertEqual(response.status_code, 200)
 
 if __name__ == '__main__':

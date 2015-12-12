@@ -194,14 +194,14 @@ def update_student(student_id):
     )
 
 
-# @admin_blueprint.route(
-#     '/admin/student/<int:student_id>',
-#     methods=['DELETE']
-# )
-# @login_required
-# @validate_admin
-# def delete_student(student_id):
-#     student = get_single_student(student_id)
-#     db.session.delete(student)
-#     db.session.commit()
-#     # return jsonify({'test': 'test'})  # update me
+@admin_blueprint.route(
+    '/admin/student/<int:student_id>',
+    methods=['DELETE']
+)
+@login_required
+@validate_admin
+def delete_student(student_id):
+    student = get_single_student(student_id)
+    db.session.delete(student)
+    db.session.commit()
+    return jsonify({'status': '{0} removed!'.format(student.email)})
