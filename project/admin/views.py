@@ -77,7 +77,8 @@ def dashboard():
     return render_template(
         '/admin/dashboard.html',
         courses=get_courses(),
-        students=get_students()
+        students=get_students(),
+        teachers=get_teachers()
     )
 
 

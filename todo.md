@@ -4,8 +4,8 @@
 
 1. Admin have full API access
   - Courses - create, read, update, delete
-  - Students - create, read, update
-  - Teachers
+  - Students - create, read, update, delete
+  - Teachers - read
   - Users
 
 ## Other

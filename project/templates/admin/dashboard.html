@@ -108,6 +108,48 @@
   </div>
   <!-- /students -->
 
+  <!-- teachers -->
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Teachers
+      <a href="" class="btn btn-primary btn-xs">Add</a>
+      {% if teachers %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+                <th>Email</th>
+                <th>Registered On</th>
+                <th>Courses being Taught</th>
+                <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for teacher in teachers %}
+                  <tr>
+                    <th scope="row">{{ teacher.id }}</th>
+                    <td>{{ teacher.email }}</td>
+                    <td>{{ teacher.registered_on }}</td>
+                    <td>
+                      <ul>
+                        {% for course in teacher.courses %}
+                          <li>{{ course.name }}</li>
+                        {% endfor %}
+                      </ul>
+                    </td>
+                    <td>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+      {% else %}
+        <p>No teachers!</p>
+    {% endif %}
+    </div>
+  </div>
+  <!-- /teachers -->
+
 </div>
 
 {% endblock %}

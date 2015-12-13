@@ -76,11 +76,12 @@ class TestAdminBlueprint(BaseTestCase):
             )
             self.assertIn(b'<h1>Dashboard</h1>', response.data)
             self.assertIn(b'<p>No courses!</p>', response.data)
-            self.assertIn(b'<h1>Dashboard</h1>', response.data)
             self.assertIn(b'<h2>Students', response.data)
             self.assertIn(b'<table class="table">', response.data)
             self.assertIn(b'<th scope="row">1</th>', response.data)
             self.assertIn(b'<td>student@student.com</td>', response.data)
+            self.assertIn(b'<h2>Teachers', response.data)
+            self.assertIn(b'<td>teacher@teacher.com</td>', response.data)
             self.assertEqual(response.status_code, 200)
 
     def test_admin_dashboard_with_courses(self):
