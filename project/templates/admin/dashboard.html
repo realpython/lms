@@ -120,7 +120,7 @@
               <th>ID</th>
                 <th>Email</th>
                 <th>Registered On</th>
-                <th>Courses being Taught</th>
+                <th>Courses Taught</th>
                 <th>Actions</th>
                 </tr>
               </thead>
@@ -138,6 +138,7 @@
                       </ul>
                     </td>
                     <td>
+                      <a href="{{ url_for('admin.update_teacher', teacher_id=teacher.id) }}" data-toggle="tooltip" title="Edit Teacher"><span class="glyphicon glyphicon-edit"></span></a>
                     </td>
                   </tr>
                 {% endfor %}

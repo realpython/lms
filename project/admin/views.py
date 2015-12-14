@@ -14,7 +14,7 @@ from flask.ext.login import current_user
 from project import db
 from project.models import Course, Teacher, Student
 from project.admin.forms import UpdateCourseForm, AddCourseForm, \
-    UpdateStudentForm, AddStudentForm, AddTeacherForm
+    UpdateStudentForm, AddStudentForm, AddTeacherForm, UpdateTeacherForm
 
 
 ##########
@@ -51,6 +51,10 @@ def get_single_course(course_id):
 
 def get_single_student(student_id):
     return Student.query.filter_by(id=student_id).first()
+
+
+def get_single_teacher(teacher_id):
+    return Teacher.query.filter_by(id=teacher_id).first()
 
 
 def validate_admin(f):
@@ -122,8 +126,9 @@ def update_course(course_id):
         (teacher.email, teacher.email)
         for teacher in get_teachers()
     ]
+    course = get_single_course(course_id)
     if form.validate_on_submit():
-        update_course = get_single_course(course_id)
+        update_course = course
         update_course.name = form.name.data
         update_course.description = form.description.data
         update_course.subject = form.subject.data
@@ -136,7 +141,7 @@ def update_course(course_id):
     return render_template(
         '/admin/update_course.html',
         form=form,
-        single_course=get_single_course(course_id)
+        single_course=course
     )
 
 
@@ -181,8 +186,9 @@ def add_student():
 @validate_admin
 def update_student(student_id):
     form = UpdateStudentForm(request.form)
+    student = get_single_student(student_id)
     if form.validate_on_submit():
-        update_student = get_single_student(student_id)
+        update_student = student
         update_student.email = form.email.data
         update_student.registered_on = form.registered_on.data
         db.session.commit()
@@ -191,7 +197,7 @@ def update_student(student_id):
     return render_template(
         '/admin/update_student.html',
         form=form,
-        single_student=get_single_student(student_id)
+        single_student=student
     )
 
 
@@ -226,3 +232,26 @@ def add_teacher():
         flash('Thank you for adding a new teacher.', 'success')
         return redirect('/admin/dashboard')
     return render_template('/admin/add_teacher.html', form=form)
+
+
+@admin_blueprint.route(
+    '/admin/update_teacher/<int:teacher_id>',
+    methods=['GET', 'POST']
+)
+@login_required
+@validate_admin
+def update_teacher(teacher_id):
+    form = UpdateTeacherForm(request.form)
+    teacher = get_single_teacher(teacher_id)
+    if form.validate_on_submit():
+        update_teacher = teacher
+        update_teacher.email = form.email.data
+        update_teacher.registered_on = form.registered_on.data
+        db.session.commit()
+        flash('Teacher updated. Thank you', 'success')
+        return redirect('/admin/dashboard'.format(teacher_id))
+    return render_template(
+        '/admin/update_teacher.html',
+        form=form,
+        single_teacher=teacher
+    )

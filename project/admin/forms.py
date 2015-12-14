@@ -77,7 +77,7 @@ class UpdateStudentForm(Form):
         validators=[DataRequired(), Email(), Length(min=6, max=40)]
     )
     registered_on = DateField(
-        'Registred On',
+        'Registered On',
         validators=[DataRequired()]
     )
 
@@ -97,4 +97,15 @@ class AddTeacherForm(Form):
             DataRequired(),
             EqualTo('password', message='Passwords must match.')
         ]
+    )
+
+
+class UpdateTeacherForm(Form):
+    email = TextField(
+        'Email Address',
+        validators=[DataRequired(), Email(), Length(min=6, max=40)]
+    )
+    registered_on = DateField(
+        'Registered On',
+        validators=[DataRequired()]
     )

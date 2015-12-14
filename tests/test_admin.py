@@ -530,6 +530,65 @@ name="registered_on" required type="date" value="',
             self.assertIn(b'<td>good@teacher.com</td>', response.data)
             self.assertEqual(response.status_code, 200)
 
+    def test_admin_edit_teacher_page(self):
+        # Ensure a admin can view edit teacher page.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='admin@admin.com',
+                    password='admin_user',
+                    confirm='admin_user'
+                ),
+                follow_redirects=True
+            )
+            response = self.client.get('/admin/update_teacher/2')
+            self.assertIn(
+                b'<h1>Update Teacher</h1>',
+                response.data
+            )
+            self.assertIn(
+                b'<input class="form-control" id="email" name="email" \
+required type="text" value="teacher@teacher.com">',
+                response.data
+            )
+            self.assertIn(
+                b'<input class="form-control" id="registered_on" \
+name="registered_on" required type="date" value="',
+                response.data
+            )
+            self.assertEqual(response.status_code, 200)
+
+    def test_admin_edit_teacher(self):
+        # Ensure a admin can edit an individual teacher.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='admin@admin.com',
+                    password='admin_user',
+                    confirm='admin_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.get('/admin/update_teacher/2')
+            response = self.client.post(
+                '/admin/update_teacher/2',
+                data=dict(
+                    email='update@teacher.com',
+                    registered_on='2005-05-26',
+                ),
+                follow_redirects=True
+            )
+            self.assertIn(b'<h1>Dashboard</h1>', response.data)
+            self.assertIn(b'<table class="table">', response.data)
+            self.assertIn(b'<th scope="row">1</th>', response.data)
+            self.assertIn(b'<h2>Teachers', response.data)
+            self.assertIn(b'<td>update@teacher.com</td>', response.data)
+            self.assertIn(b'<td>2005-05-26 00:00:00</td>', response.data)
+            self.assertNotIn(b'<td>teacher@teacher.com</td>', response.data)
+            self.assertEqual(response.status_code, 200)
+
 
 if __name__ == '__main__':
     unittest.main()
