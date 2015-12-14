@@ -14,7 +14,7 @@ from flask.ext.login import current_user
 from project import db
 from project.models import Course, Teacher, Student
 from project.admin.forms import UpdateCourseForm, AddCourseForm, \
-    UpdateStudentForm, AddStudentForm
+    UpdateStudentForm, AddStudentForm, AddTeacherForm
 
 
 ##########
@@ -206,3 +206,23 @@ def delete_student(student_id):
     db.session.delete(student)
     db.session.commit()
     return jsonify({'status': '{0} removed!'.format(student.email)})
+
+
+@admin_blueprint.route(
+    '/admin/add_teacher',
+    methods=['GET', 'POST']
+)
+@login_required
+@validate_admin
+def add_teacher():
+    form = AddTeacherForm(request.form)
+    if form.validate_on_submit():
+        new_teacher = Teacher(
+            email=form.email.data,
+            password=form.password.data
+        )
+        db.session.add(new_teacher)
+        db.session.commit()
+        flash('Thank you for adding a new teacher.', 'success')
+        return redirect('/admin/dashboard')
+    return render_template('/admin/add_teacher.html', form=form)
