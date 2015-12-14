@@ -589,6 +589,27 @@ name="registered_on" required type="date" value="',
             self.assertNotIn(b'<td>teacher@teacher.com</td>', response.data)
             self.assertEqual(response.status_code, 200)
 
+    def test_admin_delete_teacher(self):
+        # Ensure a admin can delete an individual teacher.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='admin@admin.com',
+                    password='admin_user',
+                    confirm='admin_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.delete('/admin/teacher/3')
+            self.client.delete('/admin/teacher/2')
+            response = self.client.get('/admin/dashboard/')
+            self.assertIn(b'<h1>Dashboard</h1>', response.data)
+            self.assertIn(b'<p>No teachers!</p>', response.data)
+            self.assertNotIn(b'teacher@teacher.com', response.data)
+            self.assertNotIn(b'michael@teacher.com', response.data)
+            self.assertEqual(response.status_code, 200)
+
 
 if __name__ == '__main__':
     unittest.main()

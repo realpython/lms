@@ -255,3 +255,16 @@ def update_teacher(teacher_id):
         form=form,
         single_teacher=teacher
     )
+
+
+@admin_blueprint.route(
+    '/admin/teacher/<int:teacher_id>',
+    methods=['DELETE']
+)
+@login_required
+@validate_admin
+def delete_teacher(teacher_id):
+    teacher = get_single_teacher(teacher_id)
+    db.session.delete(teacher)
+    db.session.commit()
+    return jsonify({'status': '{0} removed!'.format(teacher.email)})
