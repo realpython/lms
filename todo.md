@@ -14,7 +14,7 @@
     ```
 
 1. DRY all tests (add helpers, check db for changes)
-1. Refactor test structure
+1. Refactor test structure - WIP
 
 ## Admin
 

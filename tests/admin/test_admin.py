@@ -1,11 +1,11 @@
-# tests/test_admin.py
+# tests/admin/test_admin.py
 
 
 import unittest
 
 from flask.ext.login import current_user
 
-from base import BaseTestCase
+from tests.base import BaseTestCase
 
 
 class TestAdminBlueprint(BaseTestCase):

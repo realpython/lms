@@ -1,9 +1,9 @@
-# tests/test_main.py
+# tests/main/test_main.py
 
 
 import unittest
 
-from base import BaseTestCase
+from tests.base import BaseTestCase
 
 
 class TestMainBlueprint(BaseTestCase):
