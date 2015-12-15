@@ -1,14 +1,6 @@
 # Todo
 
-## Admin
-
-1. Admin have full API access
-  - Courses - create, read, update, delete
-  - Students - create, read, update, delete
-  - Teachers - create, read, update, delete
-  - Users
-
-## Other
+## Testing/Errors
 
 1. Add error handlers to db sessions (and test):
 
@@ -21,12 +13,22 @@
         return False
     ```
 
+1. DRY all tests (add helpers, check db for changes)
+1. Refactor test structure
+
+## Admin
+
 1. Split Admin dashboard into seperate pages (student, courses, etc.)
 1. Add courses to student form; add students to course form (for admin)
 1. Add courses to add and edit teacher forms (for admin)
-1. DRY all tests (add helpers, check db for changes)
+
+## Structure
+
 1. DRY the APIs (one central API?, refactor into proper REST structure?)
 1. Refactor blueprints into, well, "blueprints" (or components) folder, and split project into front and back-end
+
+## Other
+
 1. Format dates
 1. Resend password form
 1. Add assignments
