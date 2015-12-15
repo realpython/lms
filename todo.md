@@ -13,8 +13,10 @@
         return False
     ```
 
-1. DRY all tests (add helpers, check db for changes)
-1. Refactor test structure - WIP
+1. DRY all tests (add helpers)
+1. Update the tests to ensure that the db is updated (more integration tests!)
+1. Add coveralls / code coverage
+1. Test for different versions of Python on travis
 
 ## Admin
 
@@ -28,11 +30,9 @@
 
 ## Other
 
-1. Format dates
+1. Format dates (moment.js?)
 1. Resend password form
 1. Add assignments
 1. Add quizes
 1. Add grades
 1. Rules for when students can drop/remove courses? (or can this only come from an admin?)
-1. Add coveralls / code coverage
-1. Test for different versions of Python on travis
