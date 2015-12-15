@@ -1,11 +1,11 @@
-# tests/admin/test_admin_dashboard.py
+# project/tests/admin/test_admin_dashboard.py
 
 
 import unittest
 
 from flask.ext.login import current_user
 
-from tests.base import BaseTestCase
+from project.tests.base import BaseTestCase
 
 
 class TestAdminBlueprintDashboard(BaseTestCase):

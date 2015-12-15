@@ -1,4 +1,4 @@
-# tests/user/test_user.py
+# project/tests/user/test_user.py
 
 
 import datetime
@@ -6,7 +6,7 @@ import unittest
 
 from flask.ext.login import current_user
 
-from tests.base import BaseTestCase
+from project.tests.base import BaseTestCase
 from project.server import bcrypt
 from project.server.models import User
 from project.server.user.forms import LoginForm

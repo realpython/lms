@@ -1,15 +1,15 @@
-# tests/admin/test_admin_teachers.py
+# project/tests/admin/test_admin_students.py
 
 
 import unittest
 
-from tests.base import BaseTestCase
+from project.tests.base import BaseTestCase
 
 
-class TestAdminBlueprintTeachers(BaseTestCase):
+class TestAdminBlueprintStudents(BaseTestCase):
 
-    def test_admin_add_teacher_page(self):
-        # Ensure an admin can view add teacher page.
+    def test_admin_add_student_page(self):
+        # Ensure an admin can view add student page.
         with self.client:
             self.client.post(
                 '/login',
@@ -20,15 +20,15 @@ class TestAdminBlueprintTeachers(BaseTestCase):
                 ),
                 follow_redirects=True
             )
-            response = self.client.get('/admin/add_teacher')
+            response = self.client.get('/admin/add_student')
             self.assertIn(
-                b'<h1>Add Teacher</h1>',
+                b'<h1>Add Student</h1>',
                 response.data
             )
             self.assertEqual(response.status_code, 200)
 
-    def test_admin_add_teacher(self):
-        # Ensure an admin can add a new teacher.
+    def test_admin_add_student(self):
+        # Ensure an admin can add a new student.
         with self.client:
             self.client.post(
                 '/login',
@@ -40,11 +40,11 @@ class TestAdminBlueprintTeachers(BaseTestCase):
                 follow_redirects=True
             )
             response = self.client.post(
-                '/admin/add_teacher',
+                '/admin/add_student',
                 data=dict(
-                    email='good@teacher.com',
-                    password='bad_teacher',
-                    confirm='bad_teacher'
+                    email='good@student.com',
+                    password='bad_student',
+                    confirm='bad_student'
                 ),
                 follow_redirects=True
             )
@@ -53,13 +53,13 @@ class TestAdminBlueprintTeachers(BaseTestCase):
             self.assertIn(b'<table class="table">', response.data)
             self.assertIn(b'<th scope="row">1</th>', response.data)
             self.assertIn(b'<p>No courses!</p>', response.data)
-            self.assertIn(b'<h2>Teachers', response.data)
-            self.assertIn(b'<td>teacher@teacher.com</td>', response.data)
-            self.assertIn(b'<td>good@teacher.com</td>', response.data)
+            self.assertIn(b'<h2>Students', response.data)
+            self.assertIn(b'<td>student@student.com</td>', response.data)
+            self.assertIn(b'<td>good@student.com</td>', response.data)
             self.assertEqual(response.status_code, 200)
 
-    def test_admin_edit_teacher_page(self):
-        # Ensure a admin can view edit teacher page.
+    def test_admin_edit_student_page(self):
+        # Ensure a admin can view edit student page.
         with self.client:
             self.client.post(
                 '/login',
@@ -70,14 +70,14 @@ class TestAdminBlueprintTeachers(BaseTestCase):
                 ),
                 follow_redirects=True
             )
-            response = self.client.get('/admin/update_teacher/2')
+            response = self.client.get('/admin/update_student/1')
             self.assertIn(
-                b'<h1>Update Teacher</h1>',
+                b'<h1>Update Student</h1>',
                 response.data
             )
             self.assertIn(
                 b'<input class="form-control" id="email" name="email" \
-required type="text" value="teacher@teacher.com">',
+required type="text" value="student@student.com">',
                 response.data
             )
             self.assertIn(
@@ -87,8 +87,8 @@ name="registered_on" required type="date" value="',
             )
             self.assertEqual(response.status_code, 200)
 
-    def test_admin_edit_teacher(self):
-        # Ensure a admin can edit an individual teacher.
+    def test_admin_edit_student(self):
+        # Ensure a admin can edit an individual student.
         with self.client:
             self.client.post(
                 '/login',
@@ -99,11 +99,11 @@ name="registered_on" required type="date" value="',
                 ),
                 follow_redirects=True
             )
-            self.client.get('/admin/update_teacher/2')
+            self.client.get('/admin/update_student/1')
             response = self.client.post(
-                '/admin/update_teacher/2',
+                '/admin/update_student/1',
                 data=dict(
-                    email='update@teacher.com',
+                    email='update@student.com',
                     registered_on='2005-05-26',
                 ),
                 follow_redirects=True
@@ -111,15 +111,34 @@ name="registered_on" required type="date" value="',
             self.assertIn(b'<h1>Dashboard</h1>', response.data)
             self.assertIn(b'<table class="table">', response.data)
             self.assertIn(b'<th scope="row">1</th>', response.data)
-            self.assertIn(b'<h2>Teachers', response.data)
-            self.assertIn(b'<td>update@teacher.com</td>', response.data)
+            self.assertIn(b'<h2>Students', response.data)
+            self.assertIn(b'<td>update@student.com</td>', response.data)
             self.assertIn(b'<td>2005-05-26 00:00:00</td>', response.data)
-            self.assertNotIn(b'<td>teacher@teacher.com</td>', response.data)
+            self.assertNotIn(b'<td>student@student.com</td>', response.data)
             self.assertEqual(response.status_code, 200)
 
-    def test_admin_delete_teacher(self):
-        # Ensure a admin can delete an individual teacher.
+    def test_admin_delete_student(self):
+        # Ensure a admin can delete an individual student.
         with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.post(
+                '/teacher/add_student',
+                data=dict(
+                    email='delete@student.com',
+                    password='delete_student',
+                    confirm='delete_student'
+                ),
+                follow_redirects=True
+            )
+            self.client.get('/logout')
             self.client.post(
                 '/login',
                 data=dict(
@@ -129,13 +148,11 @@ name="registered_on" required type="date" value="',
                 ),
                 follow_redirects=True
             )
-            self.client.delete('/admin/teacher/3')
-            self.client.delete('/admin/teacher/2')
+            self.client.delete('/admin/student/1')
             response = self.client.get('/admin/dashboard/')
             self.assertIn(b'<h1>Dashboard</h1>', response.data)
-            self.assertIn(b'<p>No teachers!</p>', response.data)
-            self.assertNotIn(b'teacher@teacher.com', response.data)
-            self.assertNotIn(b'michael@teacher.com', response.data)
+            self.assertIn(b'<p>No students!</p>', response.data)
+            self.assertNotIn(b'<td>delete@student.com</td>', response.data)
             self.assertEqual(response.status_code, 200)
 
 

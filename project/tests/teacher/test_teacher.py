@@ -1,11 +1,11 @@
-# tests/teacher/test_teacher.py
+# project/tests/teacher/test_teacher.py
 
 
 import unittest
 
 from flask.ext.login import current_user
 
-from tests.base import BaseTestCase
+from project.tests.base import BaseTestCase
 
 
 class TestTeacherBlueprint(BaseTestCase):

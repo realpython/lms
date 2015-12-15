@@ -1,9 +1,9 @@
-# tests/admin/test_admin_courses.py
+# project/tests/admin/test_admin_courses.py
 
 
 import unittest
 
-from tests.base import BaseTestCase
+from project.tests.base import BaseTestCase
 
 
 class TestAdminBlueprintCourses(BaseTestCase):
