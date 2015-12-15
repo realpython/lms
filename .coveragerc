@@ -1,0 +1,6 @@
+# .coveragerc to control coverage.py
+[run]
+branch = TRUE
+omit =
+    '*/__init__.py'
+    '*/config/*'
