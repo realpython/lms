@@ -16,13 +16,13 @@ Just a basic LMS... built with brute force
 Update *project/config.py*, and then run:
 
 ```sh
-$ export APP_SETTINGS="project.config.DevelopmentConfig"
+$ export APP_SETTINGS="project.server.config.DevelopmentConfig"
 ```
 
 or
 
 ```sh
-$ export APP_SETTINGS="project.config.ProductionConfig"
+$ export APP_SETTINGS="project.server.config.ProductionConfig"
 ```
 
 ### Create DB

@@ -7,9 +7,9 @@ import unittest
 from flask.ext.login import current_user
 
 from base import BaseTestCase
-from project import bcrypt
-from project.models import User
-from project.user.forms import LoginForm
+from project.server import bcrypt
+from project.server.models import User
+from project.server.user.forms import LoginForm
 
 
 class TestUserBlueprint(BaseTestCase):

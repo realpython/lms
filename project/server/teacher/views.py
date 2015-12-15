@@ -1,4 +1,4 @@
-# project/teacher/views.py
+# project/server/teacher/views.py
 
 
 ###########
@@ -10,9 +10,9 @@ from flask import render_template, Blueprint, request, flash, redirect, url_for
 from flask.ext.login import login_required
 from flask.ext.login import current_user
 
-from project import db
-from project.models import Course
-from project.teacher.forms import AddCourseForm, UpdateCourseForm
+from project.server import db
+from project.server.models import Course
+from project.server.teacher.forms import AddCourseForm, UpdateCourseForm
 
 
 ##########

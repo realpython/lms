@@ -16,8 +16,8 @@ COV = coverage.coverage(
 )
 COV.start()
 
-from project import app, db
-from project.models import Student, Teacher, Admin, Course
+from project.server import app, db
+from project.server.models import Student, Teacher, Admin, Course
 
 
 migrate = Migrate(app, db)

@@ -25,7 +25,6 @@
 ## Structure
 
 1. DRY the APIs (one central API?, refactor into proper REST structure?)
-1. Refactor blueprints into, well, "blueprints" (or components) folder, and split project into front and back-end
 
 ## Other
 

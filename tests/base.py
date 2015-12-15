@@ -3,14 +3,14 @@
 
 from flask.ext.testing import TestCase
 
-from project import app, db
-from project.models import Student, Teacher, Admin
+from project.server import app, db
+from project.server.models import Student, Teacher, Admin
 
 
 class BaseTestCase(TestCase):
 
     def create_app(self):
-        app.config.from_object('project.config.TestingConfig')
+        app.config.from_object('project.server.config.TestingConfig')
         return app
 
     def setUp(self):

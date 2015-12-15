@@ -1,4 +1,4 @@
-# project/__init__.py
+# project/server/__init__.py
 
 
 ###########
@@ -19,7 +19,11 @@ from flask.ext.sqlalchemy import SQLAlchemy
 # config #
 ##########
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    template_folder='../client/templates',
+    static_folder='../client/static'
+)
 app.config.from_object(os.environ['APP_SETTINGS'])
 
 
@@ -39,11 +43,11 @@ db = SQLAlchemy(app)
 # blueprints #
 ##############
 
-from project.main.views import main_blueprint
-from project.user.views import user_blueprint
-from project.student.views import student_blueprint
-from project.teacher.views import teacher_blueprint
-from project.admin.views import admin_blueprint
+from project.server.main.views import main_blueprint
+from project.server.user.views import user_blueprint
+from project.server.student.views import student_blueprint
+from project.server.teacher.views import teacher_blueprint
+from project.server.admin.views import admin_blueprint
 
 app.register_blueprint(main_blueprint)
 app.register_blueprint(user_blueprint)
@@ -56,7 +60,7 @@ app.register_blueprint(admin_blueprint)
 # flask-login #
 ###############
 
-from project.models import User
+from project.server.models import User
 
 login_manager.login_view = "user.login"
 login_manager.login_message_category = 'danger'

@@ -1,9 +1,9 @@
-# project/models.py
+# project/server/models.py
 
 
 import datetime
 
-from project import db, bcrypt
+from project.server import db, bcrypt
 
 
 course_student_association_table = db.Table(
