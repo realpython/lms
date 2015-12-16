@@ -4,8 +4,6 @@ Just a basic LMS... built with brute force
 
 [![Build Status](https://travis-ci.org/realpython/lms.svg?branch=master)](https://travis-ci.org/realpython/lms)
 
-[![Coverage Status](https://coveralls.io/repos/realpython/lms/badge.svg?branch=master&service=github)](https://coveralls.io/github/realpython/lms?branch=master)
-
 ## Quick Start
 
 ### Basics

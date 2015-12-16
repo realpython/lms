@@ -1,6 +1,0 @@
-[run]
-# Change to True some day?
-branch = False
-omit =
-    */__init__.py
-    */config/*

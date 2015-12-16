@@ -8,7 +8,4 @@ install:
   - pip install -r requirements.txt
 
 script:
-  - coverage run manage.py cov
-
-after_success:
-  coveralls
+  - python manage.py test
