@@ -37,8 +37,8 @@
                     <td>{{ course.name }}</td>
                     <td>{{ course.description }}</td>
                     <td>{{ course.subject }}</td>
-                    <td>{{ course.start_date }}</td>
-                    <td>{{ course.end_date }}</td>
+                    <td>{{ course.start_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ course.end_date.strftime('%Y-%m-%d') }}</td>
                     <td>{{ course.teacher.email }}</td>
                     <td>
                       <ul>
@@ -84,7 +84,7 @@
                   <tr>
                     <th scope="row">{{ student.id }}</th>
                     <td>{{ student.email }}</td>
-                    <td>{{ student.registered_on }}</td>
+                    <td>{{ student.registered_on.strftime('%Y-%m-%d') }}</td>
                     <td>
                       <ul>
                         {% for course in student.courses %}
@@ -129,7 +129,7 @@
                   <tr>
                     <th scope="row">{{ teacher.id }}</th>
                     <td>{{ teacher.email }}</td>
-                    <td>{{ teacher.registered_on }}</td>
+                    <td>{{ teacher.registered_on.strftime('%Y-%m-%d') }}</td>
                     <td>
                       <ul>
                         {% for course in teacher.courses %}

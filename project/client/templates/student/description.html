@@ -11,8 +11,8 @@
   <div class="row">
     <div class="col-md-4">
       <p>{{ single_course.description }}</p>
-      <p>{{ single_course.start_date }}</p>
-      <p>{{ single_course.end_date }}</p>
+      <p>{{ single_course.start_date.strftime('%Y-%m-%d') }}</p>
+      <p>{{ single_course.end_date.strftime('%Y-%m-%d') }}</p>
     </div>
   </div>
 </div>

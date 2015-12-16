@@ -113,7 +113,7 @@ name="registered_on" required type="date" value="',
             self.assertIn(b'<th scope="row">1</th>', response.data)
             self.assertIn(b'<h2>Students', response.data)
             self.assertIn(b'<td>update@student.com</td>', response.data)
-            self.assertIn(b'<td>2005-05-26 00:00:00</td>', response.data)
+            self.assertIn(b'<td>2005-05-26</td>', response.data)
             self.assertNotIn(b'<td>student@student.com</td>', response.data)
             self.assertEqual(response.status_code, 200)
 

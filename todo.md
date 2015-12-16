@@ -30,7 +30,6 @@
 
 ## Other
 
-1. Format dates (moment.js?)
 1. Resend password form
 1. Add assignments
 1. Add quizes
