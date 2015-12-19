@@ -27,3 +27,17 @@ class RegisterForm(Form):
             EqualTo('password', message='Passwords must match.')
         ]
     )
+
+
+class PasswordForm(Form):
+    password = PasswordField(
+        'Password',
+        validators=[DataRequired(), Length(min=6, max=25)]
+    )
+    confirm = PasswordField(
+        'Confirm password',
+        validators=[
+            DataRequired(),
+            EqualTo('password', message='Passwords must match.')
+        ]
+    )

@@ -30,6 +30,10 @@ class TestTeacherBlueprint(BaseTestCase):
                 b'<li><a href="/teacher/courses">View Courses</a></li>',
                 response.data
             )
+            self.assertIn(
+                b'<li><a href="/password">Update Password</a></li>',
+                response.data
+            )
             self.assertTrue(current_user.email == "teacher@teacher.com")
             self.assertTrue(current_user.is_authenticated)
             self.assertTrue(current_user.is_active)

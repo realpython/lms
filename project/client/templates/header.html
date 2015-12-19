@@ -35,6 +35,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
           {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('user.password') }}">Update Password</a></li>
             <li><a href="{{ url_for('user.logout') }}">Logout</a></li>
           {% else %}
             <li><a href="{{ url_for('user.login') }}"><span class="glyphicon glyphicon-user"></span>&nbsp;Register/Login</a></li>

@@ -31,7 +31,7 @@ class TestUserBlueprint(BaseTestCase):
                 response.data
             )
             self.assertIn(b'Logout', response.data)
-            self.assertTrue(current_user.email == "admin@admin.com")
+            self.assertTrue(current_user.email == 'admin@admin.com')
             self.assertTrue(current_user.is_active())
             self.assertEqual(response.status_code, 200)
 
@@ -40,7 +40,7 @@ class TestUserBlueprint(BaseTestCase):
         with self.client:
             self.client.post(
                 '/login',
-                data=dict(email="admin@admin.com", password="admin_user"),
+                data=dict(email='admin@admin.com', password='admin_user'),
                 follow_redirects=True
             )
             response = self.client.get('/logout', follow_redirects=True)
@@ -100,14 +100,14 @@ class TestUserBlueprint(BaseTestCase):
         self.assertIn(b'<h1>Please Register</h1>\n', response.data)
 
     def test_student_registration(self):
-        # Ensure registration behaves correctls.
+        # Ensure registration behaves correctly.
         with self.client:
             response = self.client.post(
                 '/register',
                 data=dict(
-                    email="test@tester.com",
-                    password="testing",
-                    confirm="testing"
+                    email='test@tester.com',
+                    password='testing',
+                    confirm='testing'
                 ),
                 follow_redirects=True
             )
@@ -115,7 +115,84 @@ class TestUserBlueprint(BaseTestCase):
                 b'<h1>Welcome, <em>test@tester.com</em>!</h1>',
                 response.data
             )
-            self.assertTrue(current_user.email == "test@tester.com")
+            self.assertTrue(current_user.email == 'test@tester.com')
+            self.assertTrue(current_user.is_authenticated())
+            self.assertTrue(current_user.is_active())
+            self.assertFalse(current_user.is_anonymous())
+            self.assertTrue(current_user.is_student())
+            self.assertFalse(current_user.is_teacher())
+            self.assertFalse(current_user.is_admin())
+            self.assertEqual(response.status_code, 200)
+
+    def test_update_password(self):
+        # Ensure update password behaves correctly.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='student@student.com',
+                    password='student_user',
+                ),
+                follow_redirects=True
+            )
+            self.client.post(
+                '/password',
+                data=dict(
+                    password='updated_student_password',
+                    confirm='updated_student_password'
+                ),
+                follow_redirects=True
+            )
+            self.client.get('/logout', follow_redirects=True)
+            response = self.client.post(
+                '/login',
+                data=dict(
+                    email='student@student.com',
+                    password='updated_student_password',
+                ),
+                follow_redirects=True
+            )
+            self.assertIn(
+                b'<h1>Welcome, <em>student@student.com</em>!</h1>',
+                response.data
+            )
+            self.assertTrue(current_user.email == 'student@student.com')
+            self.assertTrue(current_user.is_authenticated())
+            self.assertTrue(current_user.is_active())
+            self.assertFalse(current_user.is_anonymous())
+            self.assertTrue(current_user.is_student())
+            self.assertFalse(current_user.is_teacher())
+            self.assertFalse(current_user.is_admin())
+            self.assertEqual(response.status_code, 200)
+
+    def test_update_password2(self):
+        # Ensure update password behaves correctly.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='student@student.com',
+                    password='student_user',
+                ),
+                follow_redirects=True
+            )
+            response = self.client.post(
+                '/password',
+                data=dict(
+                    password='short',
+                    confirm='short'
+                ),
+                follow_redirects=True
+            )
+            self.assertIn(
+                b'<h1>Update Password</h1>',
+                response.data
+            )
+            self.assertIn(
+                b'Field must be between 6 and 25 characters long.',
+                response.data
+            )
+            self.assertTrue(current_user.email == 'student@student.com')
             self.assertTrue(current_user.is_authenticated())
             self.assertTrue(current_user.is_active())
             self.assertFalse(current_user.is_anonymous())

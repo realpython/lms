@@ -27,6 +27,10 @@ class TestAdminBlueprintDashboard(BaseTestCase):
                 b'<li><a href="/admin/dashboard/">Dashboard</a></li>',
                 response.data
             )
+            self.assertIn(
+                b'<li><a href="/password">Update Password</a></li>',
+                response.data
+            )
             self.assertTrue(current_user.email == "admin@admin.com")
             self.assertTrue(current_user.is_authenticated)
             self.assertTrue(current_user.is_active)

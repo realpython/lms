@@ -7,11 +7,12 @@
 
 from flask import render_template, Blueprint, url_for, \
     redirect, flash, request
-from flask.ext.login import login_user, logout_user, login_required
+from flask.ext.login import login_user, logout_user, login_required, \
+    current_user
 
 from project.server import bcrypt, db
 from project.server.models import User, Student
-from project.server.user.forms import LoginForm, RegisterForm
+from project.server.user.forms import LoginForm, RegisterForm, PasswordForm
 
 ##########
 # config #
@@ -34,9 +35,7 @@ def register():
         )
         db.session.add(user)
         db.session.commit()
-
         login_user(user)
-
         flash('Thank you for registering.', 'success')
         return redirect(url_for("main.home"))
 
@@ -65,3 +64,16 @@ def logout():
     logout_user()
     flash('You were logged out. Bye!', 'success')
     return redirect(url_for('main.home'))
+
+
+@user_blueprint.route('/password', methods=['GET', 'POST'])
+@login_required
+def password():
+    form = PasswordForm(request.form)
+    if form.validate_on_submit():
+        user = User.query.filter_by(id=current_user.get_id()).first()
+        user.password = bcrypt.generate_password_hash(form.password.data)
+        db.session.commit()
+        flash('Password Updated!', 'success')
+        return redirect(url_for('main.home'))
+    return render_template('user/password.html', form=form)

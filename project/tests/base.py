@@ -16,23 +16,23 @@ class BaseTestCase(TestCase):
     def setUp(self):
         db.create_all()
         studentUser = Student(
-            email="student@student.com",
-            password="student_user"
+            email='student@student.com',
+            password='student_user'
         )
         db.session.add(studentUser)
         teacherUser = Teacher(
-            email="teacher@teacher.com",
-            password="teacher_user"
+            email='teacher@teacher.com',
+            password='teacher_user'
         )
         db.session.add(teacherUser)
         teacherUserTwo = Teacher(
-            email="michael@teacher.com",
-            password="teacher_user"
+            email='michael@teacher.com',
+            password='teacher_user'
         )
         db.session.add(teacherUserTwo)
         adminUser = Admin(
-            email="admin@admin.com",
-            password="admin_user",
+            email='admin@admin.com',
+            password='admin_user',
         )
         db.session.add(adminUser)
         db.session.commit()

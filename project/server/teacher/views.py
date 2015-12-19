@@ -7,8 +7,7 @@
 
 from functools import wraps
 from flask import render_template, Blueprint, request, flash, redirect, url_for
-from flask.ext.login import login_required
-from flask.ext.login import current_user
+from flask.ext.login import login_required, current_user
 
 from project.server import db
 from project.server.models import Course
@@ -105,15 +104,12 @@ def update_course(course_id):
     form = UpdateCourseForm(request.form)
     if form.validate_on_submit():
         update_course = get_single_course(course_id)
-
         update_course.name = form.name.data
         update_course.description = form.description.data
         update_course.subject = form.subject.data
         update_course.start_date = form.start_date.data
         update_course.end_date = form.end_date.data
-
         db.session.commit()
-
         flash('Course updated. Thank you', 'success')
         return redirect('/teacher/course/{0}'.format(course_id))
     return render_template(
