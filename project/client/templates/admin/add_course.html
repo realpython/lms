@@ -26,6 +26,8 @@
         {{ wtf.form_field(form.start_date, type="date") }}
         {{ wtf.form_field(form.end_date, type="date") }}
         {{ wtf.form_field(form.teachers) }}
+        {{ form.students.label }}
+        {{ form.students }}
 
         <button class="btn btn-success" type="submit">Add Course!</button>
 

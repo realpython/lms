@@ -53,6 +53,10 @@ def get_single_student(student_id):
     return Student.query.filter_by(id=student_id).first()
 
 
+def get_single_student_by_email(student_email):
+    return Student.query.filter_by(email=student_email).first()
+
+
 def get_single_teacher(teacher_id):
     return Teacher.query.filter_by(id=teacher_id).first()
 
@@ -98,6 +102,10 @@ def add_course():
         (teacher.email, teacher.email)
         for teacher in get_teachers()
     ]
+    form.students.choices = [
+        (students.email, students.email)
+        for students in get_students()
+    ]
     if form.validate_on_submit():
         new_course = Course(
             name=form.name.data,
@@ -107,6 +115,10 @@ def add_course():
             end_date=form.end_date.data,
             teacher_id=get_teacher_id(form.teachers.data)
         )
+        if form.students.data:
+            for student_email in form.students.data:
+                new_student = get_single_student_by_email(student_email)
+                new_course.students.append(new_student)
         db.session.add(new_course)
         db.session.commit()
         flash('Thank you for adding a new course.', 'success')

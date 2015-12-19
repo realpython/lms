@@ -3,7 +3,7 @@
 
 from flask_wtf import Form
 from wtforms import TextField, DateField, TextAreaField, SelectField, \
-    PasswordField
+    PasswordField, SelectMultipleField, widgets
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 
@@ -28,6 +28,11 @@ class AddCourseForm(Form):
         validators=[DataRequired()]
     )
     teachers = SelectField('Taught By')
+    students = SelectMultipleField(
+        'Add Students',
+        option_widget=widgets.CheckboxInput(),
+        widget=widgets.ListWidget(prefix_label=False)
+    )
 
 
 class UpdateCourseForm(Form):

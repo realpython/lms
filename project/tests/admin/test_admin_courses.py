@@ -47,7 +47,8 @@ class TestAdminBlueprintCourses(BaseTestCase):
                     description='Get chemical',
                     start_date='2015-11-28',
                     end_date='2016-11-28',
-                    teachers='teacher@teacher.com'
+                    teachers='teacher@teacher.com',
+                    students=['student@student.com']
                 ),
                 follow_redirects=True
             )
@@ -60,6 +61,7 @@ class TestAdminBlueprintCourses(BaseTestCase):
             self.assertIn(b'<td>teacher@teacher.com</td>', response.data)
             self.assertNotIn(b'<p>No courses!</p>', response.data)
             self.assertIn(b'<h2>Students', response.data)
+            self.assertIn(b'<li>Chemistry</li>', response.data)
             self.assertIn(b'<td>student@student.com</td>', response.data)
             self.assertEqual(response.status_code, 200)
 
