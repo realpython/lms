@@ -4,7 +4,10 @@
 from flask_wtf import Form
 from wtforms import TextField, DateField, TextAreaField, SelectField, \
     PasswordField, SelectMultipleField, widgets
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, Email, EqualTo, \
+    ValidationError
+
+from project.server.models import Course
 
 
 class AddCourseForm(Form):
@@ -33,6 +36,10 @@ class AddCourseForm(Form):
         option_widget=widgets.CheckboxInput(),
         widget=widgets.ListWidget(prefix_label=False)
     )
+
+    def validate_name(self, field):
+        if Course.query.filter_by(name=field.data).first():
+            raise ValidationError('Sorry. That course name is already taken.')
 
 
 class UpdateCourseForm(Form):
@@ -66,6 +73,10 @@ class UpdateCourseForm(Form):
         option_widget=widgets.CheckboxInput(),
         widget=widgets.ListWidget(prefix_label=False)
     )
+
+    def validate_name(self, field):
+        if Course.query.filter_by(name=field.data).first():
+            raise ValidationError('Sorry. That course name is already taken.')
 
 
 class AddStudentForm(Form):

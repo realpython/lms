@@ -3,7 +3,9 @@
 
 from flask_wtf import Form
 from wtforms import TextField, DateField, TextAreaField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, ValidationError
+
+from project.server.models import Course
 
 
 class AddCourseForm(Form):
@@ -27,6 +29,10 @@ class AddCourseForm(Form):
         validators=[DataRequired()]
     )
 
+    def validate_name(self, field):
+        if Course.query.filter_by(name=field.data).first():
+            raise ValidationError('Sorry. That course name is already taken.')
+
 
 class UpdateCourseForm(Form):
     name = TextField(
@@ -48,3 +54,7 @@ class UpdateCourseForm(Form):
         'End Date',
         validators=[DataRequired()]
     )
+
+    def validate_name(self, field):
+        if Course.query.filter_by(name=field.data).first():
+            raise ValidationError('Sorry. That course name is already taken.')

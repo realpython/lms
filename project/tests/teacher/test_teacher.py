@@ -142,6 +142,51 @@ class TestTeacherBlueprint(BaseTestCase):
             )
             self.assertEqual(response.status_code, 200)
 
+    def test_teacher_add_course_unique_name(self):
+        # Ensure a teacher cannot add a new course with a duplicate name.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.post(
+                '/teacher/add_course',
+                data=dict(
+                    name='Chemistry',
+                    subject='Science',
+                    description='Get chemical',
+                    start_date='2015-11-28',
+                    end_date='2016-11-28',
+                    teachers='teacher@teacher.com',
+                    students=['student@student.com']
+                ),
+                follow_redirects=True
+            )
+            response = self.client.post(
+                '/teacher/add_course',
+                data=dict(
+                    name='Chemistry',
+                    subject='Science',
+                    description='Get chemical',
+                    start_date='2015-11-28',
+                    end_date='2016-11-28',
+                    teachers='teacher@teacher.com',
+                    students=['student@student.com']
+                ),
+                follow_redirects=True
+            )
+            self.assertIn(
+                b'Sorry. That course name is already taken.',
+                response.data
+            )
+            self.assertTemplateUsed('/teacher/add.html')
+            self.assertEqual(response.status_code, 200)
+
     def test_teacher_view_courses(self):
         # Ensure a teacher can only view courses that they create.
         with self.client:
@@ -257,6 +302,55 @@ class TestTeacherBlueprint(BaseTestCase):
             self.assertIn(b'<h1>Art Appreciation</h1>', response.data)
             self.assertIn(b'From here to there.', response.data)
             self.assertEqual(response.status_code, 200)
+
+    def test_teacher_edit_course_unique_name(self):
+        # Ensure a teacher cannot edit a course with a duplicate name.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.post(
+                '/teacher/add_course',
+                data=dict(
+                    name='Music Appreciation',
+                    subject='Liberal Arts',
+                    description='This course teaches you how to understand \
+                                 what you are hearing.',
+                    start_date='2015-11-06',
+                    end_date='2015-11-07',
+                    teachers='teacher@teacher.com',
+                    students=['student@student.com']
+                ),
+                follow_redirects=True
+            )
+            self.client.get('/teacher/update_course/1')
+            response = self.client.post(
+                '/teacher/update_course/1',
+                data=dict(
+                    name='Music Appreciation',
+                    subject='Liberal Arts',
+                    description='This course teaches you how to understand \
+                                 what you are hearing.',
+                    start_date='2015-11-06',
+                    end_date='2015-11-07',
+                    teachers='teacher@teacher.com',
+                    students=['student@student.com']
+                ),
+                follow_redirects=True
+            )
+            self.assertIn(
+                b'Sorry. That course name is already taken.',
+                response.data
+            )
+            self.assertTemplateUsed('/teacher/update.html')
+            self.assertEqual(response.status_code, 200)
+
 
 if __name__ == '__main__':
     unittest.main()
