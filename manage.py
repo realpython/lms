@@ -12,7 +12,11 @@ from flask.ext.migrate import Migrate, MigrateCommand
 COV = coverage.coverage(
     branch=True,
     include='project/*',
-    omit=['*/__init__.py', '*/config/*']
+    omit=[
+        'project/tests/*',
+        'project/server/config.py',
+        'project/server/*/__init__.py'
+    ]
 )
 COV.start()
 
