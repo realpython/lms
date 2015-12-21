@@ -56,6 +56,16 @@ class UpdateCourseForm(Form):
         validators=[DataRequired()]
     )
     teachers = SelectField('Taught By')
+    current_students = SelectMultipleField(
+        'Remove Students',
+        option_widget=widgets.CheckboxInput(),
+        widget=widgets.ListWidget(prefix_label=False)
+    )
+    potential_students = SelectMultipleField(
+        'Add Students',
+        option_widget=widgets.CheckboxInput(),
+        widget=widgets.ListWidget(prefix_label=False)
+    )
 
 
 class AddStudentForm(Form):

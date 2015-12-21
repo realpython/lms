@@ -61,6 +61,15 @@ def get_single_teacher(teacher_id):
     return Teacher.query.filter_by(id=teacher_id).first()
 
 
+def get_available_students(course_id):
+    """
+    This function returns a list of students
+    not currently taking a specific course
+    """
+    course = Course.query.filter_by(id=course_id).first()
+    return list(set(get_students()) - set(course.students))
+
+
 def validate_admin(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -133,12 +142,27 @@ def add_course():
 @login_required
 @validate_admin
 def update_course(course_id):
+    current_students = False
+    potential_students = False
     form = UpdateCourseForm(request.form)
     form.teachers.choices = [
         (teacher.email, teacher.email)
         for teacher in get_teachers()
     ]
     course = get_single_course(course_id)
+    if course.students:
+        form.current_students.choices = [
+            (students.email, students.email)
+            for students in course.students
+        ]
+        current_students = True
+    available_students = get_available_students(course_id)
+    if available_students:
+        form.potential_students.choices = [
+            (students.email, students.email)
+            for students in available_students
+        ]
+        potential_students = True
     if form.validate_on_submit():
         update_course = course
         update_course.name = form.name.data
@@ -147,13 +171,23 @@ def update_course(course_id):
         update_course.start_date = form.start_date.data
         update_course.end_date = form.end_date.data
         update_course.teacher_id = get_teacher_id(form.teachers.data)
+        if form.potential_students.data:
+            for student_email in form.potential_students.data:
+                new_student = get_single_student_by_email(student_email)
+                update_course.students.append(new_student)
+        if form.current_students.data:
+            for student_email in form.current_students.data:
+                student = get_single_student_by_email(student_email)
+                update_course.students.remove(student)
         db.session.commit()
         flash('Course updated. Thank you', 'success')
         return redirect('/admin/dashboard'.format(course_id))
     return render_template(
         '/admin/update_course.html',
         form=form,
-        single_course=course
+        single_course=course,
+        current_students=current_students,
+        potential_students=potential_students
     )
 
 

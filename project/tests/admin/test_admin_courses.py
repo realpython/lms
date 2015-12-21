@@ -25,6 +25,16 @@ class TestAdminBlueprintCourses(BaseTestCase):
                 b'<h1>Add Course</h1>',
                 response.data
             )
+            self.assertIn(
+                b'<label for="students">Add Students</label>',
+                response.data
+            )
+            self.assertIn(
+                b'<ul id="students"><li><input id="students-0" \
+name="students" type="checkbox" value="student@student.com"> \
+<label for="students-0">student@student.com</label></li></ul>',
+                response.data
+            )
             self.assertEqual(response.status_code, 200)
 
     def test_admin_add_course(self):
@@ -109,10 +119,18 @@ class TestAdminBlueprintCourses(BaseTestCase):
 name="name" required type="text" value="Music Appreciation">',
                 response.data
             )
+            self.assertIn(
+                b'<label for="potential_students">Add Students</label>',
+                response.data
+            )
+            self.assertIn(
+                b'<ul id="potential_students"><li><input id="potential_students-0" name="potential_students" type="checkbox" value="student@student.com"> <label for="potential_students-0">student@student.com</label></li></ul>',
+                response.data
+            )
             self.assertEqual(response.status_code, 200)
 
-    def test_admin_edit_course(self):
-        # Ensure a admin can edit an individual course.
+    def test_admin_edit_course_and_add_student(self):
+        # Ensure a admin can edit (adding a student) an individual course.
         with self.client:
             self.client.post(
                 '/login',
@@ -154,7 +172,8 @@ name="name" required type="text" value="Music Appreciation">',
                     description='From here to there.',
                     start_date='2015-11-06',
                     end_date='2015-11-07',
-                    teachers='teacher@teacher.com'
+                    teachers='teacher@teacher.com',
+                    potential_students=['student@student.com']
                 ),
                 follow_redirects=True
             )
@@ -165,6 +184,59 @@ name="name" required type="text" value="Music Appreciation">',
             self.assertIn(b'<td>Art Appreciation</td>', response.data)
             self.assertIn(b'From here to there.', response.data)
             self.assertIn(b'<td>teacher@teacher.com</td>', response.data)
+            self.assertIn(b'<li>student@student.com</li>', response.data)
+            self.assertIn(b'<h2>Students', response.data)
+            self.assertIn(b'<td>student@student.com</td>', response.data)
+            self.assertEqual(response.status_code, 200)
+
+    def test_admin_edit_course_and_remove_student(self):
+        # Ensure a admin can edit (removing a student) an individual course.
+        with self.client:
+            self.client.post(
+                '/login',
+                data=dict(
+                    email='admin@admin.com',
+                    password='admin_user',
+                    confirm='admin_user'
+                ),
+                follow_redirects=True
+            )
+            self.client.post(
+                '/admin/add_course',
+                data=dict(
+                    name='Music Appreciation',
+                    subject='Liberal Arts',
+                    description='This course teaches you how to understand \
+                                 what you are hearing.',
+                    start_date='2015-11-06',
+                    end_date='2015-11-07',
+                    teachers='teacher@teacher.com',
+                    students=['student@student.com']
+                ),
+                follow_redirects=True
+            )
+            self.client.get('/admin/update_course/1')
+            response = self.client.post(
+                '/admin/update_course/1',
+                data=dict(
+                    name='Art Appreciation',
+                    subject='Liberal Arts',
+                    description='From here to there.',
+                    start_date='2015-11-06',
+                    end_date='2015-11-07',
+                    teachers='teacher@teacher.com',
+                    current_students=['student@student.com']
+                ),
+                follow_redirects=True
+            )
+            self.assertIn(b'<h1>Dashboard</h1>', response.data)
+            self.assertIn(b'<h2>Courses', response.data)
+            self.assertIn(b'<table class="table">', response.data)
+            self.assertIn(b'<th scope="row">1</th>', response.data)
+            self.assertIn(b'<td>Art Appreciation</td>', response.data)
+            self.assertIn(b'From here to there.', response.data)
+            self.assertIn(b'<td>teacher@teacher.com</td>', response.data)
+            self.assertNotIn(b'<li>student@student.com</li>', response.data)
             self.assertIn(b'<h2>Students', response.data)
             self.assertIn(b'<td>student@student.com</td>', response.data)
             self.assertEqual(response.status_code, 200)

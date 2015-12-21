@@ -21,7 +21,6 @@
 ## Admin
 
 1. Split Admin dashboard into seperate pages (student, courses, etc.)
-1. Add students to edit course form
 1. Add courses to add and edit teacher forms
 
 ## Structure
