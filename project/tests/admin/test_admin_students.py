@@ -11,15 +11,6 @@ class TestAdminBlueprintStudents(BaseTestCase):
     def test_admin_add_student_page(self):
         # Ensure an admin can view add student page.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.get('/admin/add_student')
             self.assertIn(
                 b'<h1>Add Student</h1>',
@@ -30,15 +21,6 @@ class TestAdminBlueprintStudents(BaseTestCase):
     def test_admin_add_student(self):
         # Ensure an admin can add a new student.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.post(
                 '/admin/add_student',
                 data=dict(
@@ -61,15 +43,6 @@ class TestAdminBlueprintStudents(BaseTestCase):
     def test_admin_edit_student_page(self):
         # Ensure a admin can view edit student page.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.get('/admin/update_student/1')
             self.assertIn(
                 b'<h1>Update Student</h1>',
@@ -90,15 +63,6 @@ name="registered_on" required type="date" value="',
     def test_admin_edit_student(self):
         # Ensure a admin can edit an individual student.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             self.client.get('/admin/update_student/1')
             response = self.client.post(
                 '/admin/update_student/1',

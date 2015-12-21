@@ -37,6 +37,16 @@ class BaseTestCase(TestCase):
         db.session.add(adminUser)
         db.session.commit()
 
+        self.client.post(
+            '/login',
+            data=dict(
+                email='admin@admin.com',
+                password='admin_user',
+                confirm='admin_user'
+            ),
+            follow_redirects=True
+        )
+
     def tearDown(self):
         db.session.remove()
         db.drop_all()

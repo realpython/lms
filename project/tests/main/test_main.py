@@ -10,6 +10,7 @@ class TestMainBlueprint(BaseTestCase):
 
     def test_index(self):
         # Ensure Flask is setup.
+        self.client.get('/logout', follow_redirects=True)
         response = self.client.get('/', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Welcome!', response.data)

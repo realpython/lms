@@ -11,15 +11,6 @@ class TestAdminBlueprintTeachers(BaseTestCase):
     def test_admin_add_teacher_page(self):
         # Ensure an admin can view add teacher page.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.get('/admin/add_teacher')
             self.assertIn(
                 b'<h1>Add Teacher</h1>',
@@ -30,15 +21,6 @@ class TestAdminBlueprintTeachers(BaseTestCase):
     def test_admin_add_teacher(self):
         # Ensure an admin can add a new teacher.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.post(
                 '/admin/add_teacher',
                 data=dict(
@@ -61,15 +43,6 @@ class TestAdminBlueprintTeachers(BaseTestCase):
     def test_admin_edit_teacher_page(self):
         # Ensure a admin can view edit teacher page.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.get('/admin/update_teacher/2')
             self.assertIn(
                 b'<h1>Update Teacher</h1>',
@@ -90,15 +63,6 @@ name="registered_on" required type="date" value="',
     def test_admin_edit_teacher(self):
         # Ensure a admin can edit an individual teacher.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             self.client.get('/admin/update_teacher/2')
             response = self.client.post(
                 '/admin/update_teacher/2',
@@ -120,15 +84,6 @@ name="registered_on" required type="date" value="',
     def test_admin_delete_teacher(self):
         # Ensure a admin can delete an individual teacher.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             self.client.delete('/admin/teacher/3')
             self.client.delete('/admin/teacher/2')
             response = self.client.get('/admin/dashboard/')

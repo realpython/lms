@@ -13,6 +13,7 @@ class TestAdminBlueprintDashboard(BaseTestCase):
     def test_admin_login(self):
         # Ensure login behaves correctly.
         with self.client:
+            self.client.get('/logout')
             response = self.client.post(
                 '/login',
                 data=dict(
@@ -65,15 +66,6 @@ class TestAdminBlueprintDashboard(BaseTestCase):
     def test_admin_dashboard(self):
         # Ensure an admin can view the admin dashboard.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.get(
                 '/admin/dashboard',
                 follow_redirects=True

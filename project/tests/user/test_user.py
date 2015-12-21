@@ -16,6 +16,7 @@ class TestUserBlueprint(BaseTestCase):
 
     def test_correct_login(self):
         # Ensure login behaves correctly with correct credentials.
+        response = self.client.get('/logout', follow_redirects=True)
         with self.client:
             response = self.client.post(
                 '/login',
@@ -49,6 +50,7 @@ class TestUserBlueprint(BaseTestCase):
 
     def test_logout_route_requires_login(self):
         # Ensure logout route requres logged in user.
+        self.client.get('/logout', follow_redirects=True)
         response = self.client.get('/logout', follow_redirects=True)
         self.assertIn(b'Please log in to access this page', response.data)
 

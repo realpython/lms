@@ -11,15 +11,6 @@ class TestAdminBlueprintCourses(BaseTestCase):
     def test_admin_add_course_page(self):
         # Ensure an admin can view add course page.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.get('/admin/add_course')
             self.assertIn(
                 b'<h1>Add Course</h1>',
@@ -40,15 +31,6 @@ name="students" type="checkbox" value="student@student.com"> \
     def test_admin_add_course(self):
         # Ensure an admin can add a new course.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.post(
                 '/admin/add_course',
                 data=dict(
@@ -78,15 +60,6 @@ name="students" type="checkbox" value="student@student.com"> \
     def test_admin_add_course_unique_name(self):
         # Ensure an admin cannot add a new course with a duplicate name.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             self.client.post(
                 '/admin/add_course',
                 data=dict(
@@ -238,15 +211,6 @@ name="name" required type="text" value="Music Appreciation">',
         # Ensure a admin can edit (removing a student) an individual course.
         with self.client:
             self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
-            self.client.post(
                 '/admin/add_course',
                 data=dict(
                     name='Music Appreciation',
@@ -289,15 +253,6 @@ name="name" required type="text" value="Music Appreciation">',
     def test_admin_edit_course_unique_name(self):
         # Ensure an admin cannot edit a course with a duplicate name.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='admin@admin.com',
-                    password='admin_user',
-                    confirm='admin_user'
-                ),
-                follow_redirects=True
-            )
             self.client.post(
                 '/admin/add_course',
                 data=dict(
