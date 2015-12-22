@@ -54,3 +54,9 @@ With coverage:
 ```sh
 $ python manage.py cov
 ```
+
+### Business Rules
+
+#### Admin
+
+1. Teachers AND studentds can ONLY be added to a course from the add/edit course forms

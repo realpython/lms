@@ -5,21 +5,27 @@
 1. DRY all tests (add helpers)
 1. Update the tests to ensure that the db is updated (more integration tests!)
 1. Add coveralls / code coverage
+1. Better error handling
+
+## Courses
+
+1. Add ability to toggle course on/off. Controlled by admin.
+
+## Teachers
+
+1. Add ability to toggle teacher on/off. Controlled by admin.
+1. Add students to add and edit course forms
+
+## Students
+
+1. Add ability to toggle student on/off. Controlled by admin.
+1. Add courses to student form
 
 ## Admin
 
-1. Add/Remove courses edit teacher forms
-1. Add courses to add and edit student forms
-
-## Structure
-
-1. DRY the APIs (one central API?, refactor into proper REST structure?)
+1. Add unique validator to add student form
 
 ## Other
 
-1. Add assignments
-1. Add quizes
-1. Add grades
-1. Add courses to student form
-1. Add students to add and edit course forms (for teachers)
-1. Rules for when students can drop/remove courses? (or can this only come from an admin?)
+1. Add assignments, quizes, and grades. Controlled by teachers and admin.
+1. DRY the APIs (one central API?, refactor into proper REST structure?)
