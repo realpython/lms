@@ -2,17 +2,6 @@
 
 ## Testing/Errors
 
-1. Add error handlers to db sessions (and test):
-
-    ```python
-    try:
-        session.add(c)
-        session.commit()
-        return True
-    except sqlalchemy.exc.IntegrityError as err:
-        return False
-    ```
-
 1. DRY all tests (add helpers)
 1. Update the tests to ensure that the db is updated (more integration tests!)
 1. Add coveralls / code coverage
