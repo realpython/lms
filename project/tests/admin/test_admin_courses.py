@@ -250,45 +250,6 @@ name="name" required type="text" value="Music Appreciation">',
             self.assertIn(b'<td>student@student.com</td>', response.data)
             self.assertEqual(response.status_code, 200)
 
-    def test_admin_edit_course_unique_name(self):
-        # Ensure an admin cannot edit a course with a duplicate name.
-        with self.client:
-            self.client.post(
-                '/admin/add_course',
-                data=dict(
-                    name='Music Appreciation',
-                    subject='Liberal Arts',
-                    description='This course teaches you how to understand \
-                                 what you are hearing.',
-                    start_date='2015-11-06',
-                    end_date='2015-11-07',
-                    teachers='teacher@teacher.com',
-                    students=['student@student.com']
-                ),
-                follow_redirects=True
-            )
-            self.client.get('/admin/update_course/1')
-            response = self.client.post(
-                '/admin/update_course/1',
-                data=dict(
-                    name='Music Appreciation',
-                    subject='Liberal Arts',
-                    description='This course teaches you how to understand \
-                                 what you are hearing.',
-                    start_date='2015-11-06',
-                    end_date='2015-11-07',
-                    teachers='teacher@teacher.com',
-                    students=['student@student.com']
-                ),
-                follow_redirects=True
-            )
-            self.assertIn(
-                b'Sorry. That course name is already taken.',
-                response.data
-            )
-            self.assertTemplateUsed('/admin/update_course.html')
-            self.assertEqual(response.status_code, 200)
-
     def test_admin_delete_course(self):
         # Ensure a admin can delete an individual course.
         with self.client:

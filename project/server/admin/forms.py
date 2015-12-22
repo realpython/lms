@@ -74,10 +74,6 @@ class UpdateCourseForm(Form):
         widget=widgets.ListWidget(prefix_label=False)
     )
 
-    def validate_name(self, field):
-        if Course.query.filter_by(name=field.data).first():
-            raise ValidationError('Sorry. That course name is already taken.')
-
 
 class AddStudentForm(Form):
     email = TextField(

@@ -34,7 +34,3 @@
 1. Add courses to student form
 1. Add students to add and edit course forms (for teachers)
 1. Rules for when students can drop/remove courses? (or can this only come from an admin?)
-
-## Forms
-
-1. Update the update course form so that the course name is only checked for duplicates if it is updated in the form
