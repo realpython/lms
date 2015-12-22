@@ -20,6 +20,10 @@
 1. Add ability to toggle student on/off. Controlled by admin.
 1. Add courses to student form
 
+## Users
+
+1. Add unique validator to add student form
+
 ## Admin
 
 1. Add unique validator to add student form

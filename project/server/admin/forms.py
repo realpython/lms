@@ -7,7 +7,7 @@ from wtforms import TextField, DateField, TextAreaField, SelectField, \
 from wtforms.validators import DataRequired, Length, Email, EqualTo, \
     ValidationError
 
-from project.server.models import Course, Teacher
+from project.server.models import Course, Teacher, Student
 
 
 class AddCourseForm(Form):
@@ -91,6 +91,10 @@ class AddStudentForm(Form):
             EqualTo('password', message='Passwords must match.')
         ]
     )
+
+    def validate_email(self, field):
+        if Student.query.filter_by(email=field.data).first():
+            raise ValidationError('Sorry. That email is already taken.')
 
 
 class UpdateStudentForm(Form):

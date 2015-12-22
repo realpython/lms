@@ -19,6 +19,8 @@ Update *project/config.py*, and then run:
 $ export APP_SETTINGS="project.server.config.DevelopmentConfig"
 ```
 
+set APP_SETTINGS="\project\server\config\DevelopmentConfig"
+
 or
 
 ```sh
