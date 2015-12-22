@@ -5,10 +5,10 @@ import unittest
 
 from flask.ext.login import current_user
 
-from project.tests.base import BaseTestCase
+from project.tests.base import BaseTestCaseStudent
 
 
-class TestStudentBlueprint(BaseTestCase):
+class TestStudentBlueprint(BaseTestCaseStudent):
 
     def test_student_registration(self):
         # Ensure registration behaves correctly.
@@ -42,6 +42,7 @@ class TestStudentBlueprint(BaseTestCase):
     def test_student_login(self):
         # Ensure login behaves correctly.
         with self.client:
+            self.client.get('/logout', follow_redirects=True)
             response = self.client.post(
                 '/login',
                 data=dict(
@@ -75,15 +76,6 @@ class TestStudentBlueprint(BaseTestCase):
     def test_student_courses(self):
         # Ensure a student can view all courses s/he are taking.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='student@student.com',
-                    password='student_user',
-                    confirm='student_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.get('/student/courses')
             self.assertIn(
                 b'<h1>All Courses</h1>',
@@ -98,15 +90,6 @@ class TestStudentBlueprint(BaseTestCase):
     def test_student_add_course_page_without_courses(self):
         # Ensure a student can view add course page with no available courses.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='student@student.com',
-                    password='student_user',
-                    confirm='student_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.get('/student/add_course')
             self.assertIn(
                 b'<h1>Add Course</h1>',

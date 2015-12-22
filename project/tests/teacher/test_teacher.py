@@ -5,14 +5,15 @@ import unittest
 
 from flask.ext.login import current_user
 
-from project.tests.base import BaseTestCase
+from project.tests.base import BaseTestCaseTeacher
 
 
-class TestTeacherBlueprint(BaseTestCase):
+class TestTeacherBlueprint(BaseTestCaseTeacher):
 
     def test_teacher_login(self):
         # Ensure login behaves correctly.
         with self.client:
+            self.client.get('/logout')
             response = self.client.post(
                 '/login',
                 data=dict(
@@ -46,15 +47,6 @@ class TestTeacherBlueprint(BaseTestCase):
     def test_teacher_courses(self):
         # Ensure a teacher can view all courses.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='teacher@teacher.com',
-                    password='teacher_user',
-                    confirm='teacher_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.get('/teacher/courses')
             self.assertIn(
                 b'<h1>All Courses</h1>',
@@ -91,15 +83,6 @@ class TestTeacherBlueprint(BaseTestCase):
     def test_teacher_add_course_page(self):
         # Ensure a teacher can view add course page.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='teacher@teacher.com',
-                    password='teacher_user',
-                    confirm='teacher_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.get('/teacher/add_course')
             self.assertIn(
                 b'<h1>Add Course</h1>',
@@ -110,15 +93,6 @@ class TestTeacherBlueprint(BaseTestCase):
     def test_teacher_add_course(self):
         # Ensure a teacher can add a new course.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='teacher@teacher.com',
-                    password='teacher_user',
-                    confirm='teacher_user'
-                ),
-                follow_redirects=True
-            )
             response = self.client.post(
                 '/teacher/add_course',
                 data=dict(
@@ -145,15 +119,6 @@ class TestTeacherBlueprint(BaseTestCase):
     def test_teacher_add_course_unique_name(self):
         # Ensure a teacher cannot add a new course with a duplicate name.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='teacher@teacher.com',
-                    password='teacher_user',
-                    confirm='teacher_user'
-                ),
-                follow_redirects=True
-            )
             self.client.post(
                 '/teacher/add_course',
                 data=dict(
@@ -191,15 +156,6 @@ class TestTeacherBlueprint(BaseTestCase):
         # Ensure a teacher can only view courses that they create.
         with self.client:
             self.client.post(
-                '/login',
-                data=dict(
-                    email='teacher@teacher.com',
-                    password='teacher_user',
-                    confirm='teacher_user'
-                ),
-                follow_redirects=True
-            )
-            self.client.post(
                 '/teacher/add_course',
                 data=dict(
                     name='Music Appreciation',
@@ -236,15 +192,6 @@ class TestTeacherBlueprint(BaseTestCase):
         # Ensure a teacher can view an individual course.
         with self.client:
             self.client.post(
-                '/login',
-                data=dict(
-                    email='teacher@teacher.com',
-                    password='teacher_user',
-                    confirm='teacher_user'
-                ),
-                follow_redirects=True
-            )
-            self.client.post(
                 '/teacher/add_course',
                 data=dict(
                     name='Music Appreciation',
@@ -267,15 +214,6 @@ class TestTeacherBlueprint(BaseTestCase):
     def test_teacher_edit_course(self):
         # Ensure a teacher can edit an individual course.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='teacher@teacher.com',
-                    password='teacher_user',
-                    confirm='teacher_user'
-                ),
-                follow_redirects=True
-            )
             self.client.post(
                 '/teacher/add_course',
                 data=dict(
@@ -306,15 +244,6 @@ class TestTeacherBlueprint(BaseTestCase):
     def test_teacher_edit_course_unique_name(self):
         # Ensure a teacher cannot edit a course with a duplicate name.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(
-                    email='teacher@teacher.com',
-                    password='teacher_user',
-                    confirm='teacher_user'
-                ),
-                follow_redirects=True
-            )
             self.client.post(
                 '/teacher/add_course',
                 data=dict(

@@ -3,10 +3,10 @@
 
 import unittest
 
-from project.tests.base import BaseTestCase
+from project.tests.base import BaseTestCaseAdmin
 
 
-class TestAdminBlueprintTeachers(BaseTestCase):
+class TestAdminBlueprintTeachers(BaseTestCaseAdmin):
 
     def test_admin_add_teacher_page(self):
         # Ensure an admin can view add teacher page.

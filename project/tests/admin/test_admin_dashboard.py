@@ -5,10 +5,10 @@ import unittest
 
 from flask.ext.login import current_user
 
-from project.tests.base import BaseTestCase
+from project.tests.base import BaseTestCaseAdmin
 
 
-class TestAdminBlueprintDashboard(BaseTestCase):
+class TestAdminBlueprintDashboard(BaseTestCaseAdmin):
 
     def test_admin_login(self):
         # Ensure login behaves correctly.

@@ -3,10 +3,10 @@
 
 import unittest
 
-from project.tests.base import BaseTestCase
+from project.tests.base import BaseTestCaseMain
 
 
-class TestMainBlueprint(BaseTestCase):
+class TestMainBlueprint(BaseTestCaseMain):
 
     def test_index(self):
         # Ensure Flask is setup.

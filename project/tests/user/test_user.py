@@ -6,18 +6,18 @@ import unittest
 
 from flask.ext.login import current_user
 
-from project.tests.base import BaseTestCase
+from project.tests.base import BaseTestCaseAdmin
 from project.server import bcrypt
 from project.server.models import User
 from project.server.user.forms import LoginForm
 
 
-class TestUserBlueprint(BaseTestCase):
+class TestUserBlueprint(BaseTestCaseAdmin):
 
     def test_correct_login(self):
         # Ensure login behaves correctly with correct credentials.
-        response = self.client.get('/logout', follow_redirects=True)
         with self.client:
+            self.client.get('/logout', follow_redirects=True)
             response = self.client.post(
                 '/login',
                 data=dict(
@@ -39,11 +39,6 @@ class TestUserBlueprint(BaseTestCase):
     def test_logout_behaves_correctly(self):
         # Ensure logout behaves correctly - regarding the session.
         with self.client:
-            self.client.post(
-                '/login',
-                data=dict(email='admin@admin.com', password='admin_user'),
-                follow_redirects=True
-            )
             response = self.client.get('/logout', follow_redirects=True)
             self.assertIn(b'You were logged out. Bye!', response.data)
             self.assertFalse(current_user.is_active)
@@ -67,6 +62,7 @@ class TestUserBlueprint(BaseTestCase):
     def test_get_by_id(self):
         # Ensure id is correct for the current/logged in user.
         with self.client:
+            self.client.get('/logout', follow_redirects=True)
             self.client.post('/login', data=dict(
                 email='admin@admin.com', password='admin_user'
             ), follow_redirects=True)
@@ -75,9 +71,6 @@ class TestUserBlueprint(BaseTestCase):
     def test_registered_on_defaults_to_datetime(self):
         # Ensure that registered_on is a datetime.
         with self.client:
-            self.client.post('/login', data=dict(
-                email='admin@admin.com', password='admin_user'
-            ), follow_redirects=True)
             user = User.query.filter_by(email='admin@admin.com').first()
             self.assertIsInstance(user.registered_on, datetime.datetime)
 
@@ -91,6 +84,7 @@ class TestUserBlueprint(BaseTestCase):
     def test_validate_invalid_password(self):
         # Ensure user can't login when the pasword is incorrect.
         with self.client:
+            self.client.get('/logout', follow_redirects=True)
             response = self.client.post('/login', data=dict(
                 email='admin@admin.com', password='foo_bar'
             ), follow_redirects=True)
