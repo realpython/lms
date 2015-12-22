@@ -1,4 +1,4 @@
-# tests/base.py
+# project/tests/base.py
 
 
 from flask.ext.testing import TestCase

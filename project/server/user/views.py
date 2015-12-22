@@ -11,7 +11,7 @@ from flask.ext.login import login_user, logout_user, login_required, \
     current_user
 from sqlalchemy import exc
 
-from project.server import bcrypt, db
+from project.server import password_hash, db
 from project.server.models import User, Student
 from project.server.user.forms import LoginForm, RegisterForm, PasswordForm
 
@@ -52,7 +52,7 @@ def login():
     form = LoginForm(request.form)
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user and bcrypt.check_password_hash(
+        if user and password_hash.check_password_hash(
                 user.password, request.form['password']
         ):
             login_user(user)
@@ -78,7 +78,7 @@ def password():
     form = PasswordForm(request.form)
     if form.validate_on_submit():
         user = User.query.filter_by(id=current_user.get_id()).first()
-        user.password = bcrypt.generate_password_hash(form.password.data)
+        user.password = password_hash.generate_password_hash(form.password.data)
         try:
             db.session.commit()
             flash('Password Updated!', 'success')
