@@ -8,7 +8,8 @@
 
 ## Admin
 
-1. Add courses to add and edit teacher forms
+1. Add/Remove courses edit teacher forms
+1. Add courses to add and edit student forms
 
 ## Structure
 

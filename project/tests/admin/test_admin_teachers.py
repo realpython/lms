@@ -40,6 +40,25 @@ class TestAdminBlueprintTeachers(BaseTestCaseAdmin):
             self.assertIn(b'<td>good@teacher.com</td>', response.data)
             self.assertEqual(response.status_code, 200)
 
+    def test_admin_add_teacher_unique_email(self):
+        # Ensure an admin cannot add a new teacher with a duplicate email.
+        with self.client:
+            response = self.client.post(
+                '/admin/add_teacher',
+                data=dict(
+                    email='teacher@teacher.com',
+                    password='teacher_user',
+                    confirm='teacher_user'
+                ),
+                follow_redirects=True
+            )
+            self.assertIn(
+                b'Sorry. That email is already taken.',
+                response.data
+            )
+            self.assertTemplateUsed('/admin/add_teacher.html')
+            self.assertEqual(response.status_code, 200)
+
     def test_admin_edit_teacher_page(self):
         # Ensure a admin can view edit teacher page.
         with self.client:
