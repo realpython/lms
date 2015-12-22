@@ -14,7 +14,6 @@
 ## Teachers
 
 1. Add ability to toggle teacher on/off. Controlled by admin.
-1. Add students to add and edit course forms
 
 ## Students
 

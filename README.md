@@ -59,4 +59,12 @@ $ python manage.py cov
 
 #### Admin
 
-1. Teachers AND studentds can ONLY be added to a course from the add/edit course forms
+1. Teachers and students can only be added to a course from the add/edit course forms.
+
+#### Courses
+
+1. Students can add themselves to a course, but they cannot remove themselves.
+
+#### Teachers
+
+1. Teachers can create new courses, but they cannot add students.
