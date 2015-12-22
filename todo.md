@@ -5,7 +5,6 @@
 1. DRY all tests (add helpers)
 1. Update the tests to ensure that the db is updated (more integration tests!)
 1. Add coveralls / code coverage
-1. Test for different versions of Python on travis
 
 ## Admin
 
