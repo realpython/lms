@@ -10,6 +10,7 @@ from flask import render_template, Blueprint, request, flash, redirect, \
     url_for, jsonify
 from flask.ext.login import login_required
 from flask.ext.login import current_user
+from sqlalchemy import exc
 
 from project.server import db
 from project.server.models import Course, Teacher, Student
@@ -128,10 +129,14 @@ def add_course():
             for student_email in form.students.data:
                 new_student = get_single_student_by_email(student_email)
                 new_course.students.append(new_student)
-        db.session.add(new_course)
-        db.session.commit()
-        flash('Thank you for adding a new course.', 'success')
-        return redirect('/admin/dashboard')
+        try:
+            db.session.add(new_course)
+            db.session.commit()
+            flash('Thank you for adding a new course.', 'success')
+            return redirect('/admin/dashboard')
+        except exc.SQLAlchemyError:
+            flash('Something went wrong.', 'danger')
+            return redirect('/admin/dashboard')
     return render_template('/admin/add_course.html', form=form)
 
 
@@ -179,9 +184,13 @@ def update_course(course_id):
             for student_email in form.current_students.data:
                 student = get_single_student_by_email(student_email)
                 update_course.students.remove(student)
-        db.session.commit()
-        flash('Course updated. Thank you', 'success')
-        return redirect('/admin/dashboard'.format(course_id))
+        try:
+            db.session.commit()
+            flash('Course updated. Thank you', 'success')
+            return redirect('/admin/dashboard'.format(course_id))
+        except exc.SQLAlchemyError:
+            flash('Something went wrong.', 'danger')
+            return redirect('/admin/dashboard'.format(course_id))
     return render_template(
         '/admin/update_course.html',
         form=form,
@@ -199,9 +208,12 @@ def update_course(course_id):
 @validate_admin
 def delete_course(course_id):
     course = get_single_course(course_id)
-    db.session.delete(course)
-    db.session.commit()
-    return jsonify({'status': '{0} removed!'.format(course.name)})
+    try:
+        db.session.delete(course)
+        db.session.commit()
+        return jsonify({'status': '{0} removed!'.format(course.name)})
+    except exc.SQLAlchemyError:
+        return jsonify({'status': 'Something went wrong.'})
 
 
 @admin_blueprint.route(
@@ -217,10 +229,14 @@ def add_student():
             email=form.email.data,
             password=form.password.data
         )
-        db.session.add(new_student)
-        db.session.commit()
-        flash('Thank you for adding a new student.', 'success')
-        return redirect('/admin/dashboard')
+        try:
+            db.session.add(new_student)
+            db.session.commit()
+            flash('Thank you for adding a new student.', 'success')
+            return redirect('/admin/dashboard')
+        except exc.SQLAlchemyError:
+            flash('Something went wrong.', 'danger')
+            return redirect('/admin/dashboard')
     return render_template('/admin/add_student.html', form=form)
 
 
@@ -237,9 +253,13 @@ def update_student(student_id):
         update_student = student
         update_student.email = form.email.data
         update_student.registered_on = form.registered_on.data
-        db.session.commit()
-        flash('Student updated. Thank you', 'success')
-        return redirect('/admin/dashboard'.format(student_id))
+        try:
+            db.session.commit()
+            flash('Student updated. Thank you', 'success')
+            return redirect('/admin/dashboard')
+        except exc.SQLAlchemyError:
+            flash('Something went wrong.', 'danger')
+            return redirect('/admin/dashboard')
     return render_template(
         '/admin/update_student.html',
         form=form,
@@ -255,9 +275,12 @@ def update_student(student_id):
 @validate_admin
 def delete_student(student_id):
     student = get_single_student(student_id)
-    db.session.delete(student)
-    db.session.commit()
-    return jsonify({'status': '{0} removed!'.format(student.email)})
+    try:
+        db.session.delete(student)
+        db.session.commit()
+        return jsonify({'status': '{0} removed!'.format(student.email)})
+    except exc.SQLAlchemyError:
+        return jsonify({'status': 'Something went wrong.'})
 
 
 @admin_blueprint.route(
@@ -273,10 +296,14 @@ def add_teacher():
             email=form.email.data,
             password=form.password.data
         )
-        db.session.add(new_teacher)
-        db.session.commit()
-        flash('Thank you for adding a new teacher.', 'success')
-        return redirect('/admin/dashboard')
+        try:
+            db.session.add(new_teacher)
+            db.session.commit()
+            flash('Thank you for adding a new teacher.', 'success')
+            return redirect('/admin/dashboard')
+        except exc.SQLAlchemyError:
+            flash('Something went wrong.', 'danger')
+            return redirect('/admin/dashboard')
     return render_template('/admin/add_teacher.html', form=form)
 
 
@@ -293,9 +320,13 @@ def update_teacher(teacher_id):
         update_teacher = teacher
         update_teacher.email = form.email.data
         update_teacher.registered_on = form.registered_on.data
-        db.session.commit()
-        flash('Teacher updated. Thank you', 'success')
-        return redirect('/admin/dashboard'.format(teacher_id))
+        try:
+            db.session.commit()
+            flash('Teacher updated. Thank you', 'success')
+            return redirect('/admin/dashboard')
+        except exc.SQLAlchemyError:
+            flash('Something went wrong.', 'danger')
+            return redirect('/admin/dashboard')
     return render_template(
         '/admin/update_teacher.html',
         form=form,
@@ -311,6 +342,9 @@ def update_teacher(teacher_id):
 @validate_admin
 def delete_teacher(teacher_id):
     teacher = get_single_teacher(teacher_id)
-    db.session.delete(teacher)
-    db.session.commit()
-    return jsonify({'status': '{0} removed!'.format(teacher.email)})
+    try:
+        db.session.delete(teacher)
+        db.session.commit()
+        return jsonify({'status': '{0} removed!'.format(teacher.email)})
+    except exc.SQLAlchemyError:
+        return jsonify({'status': 'Something went wrong.'})

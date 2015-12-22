@@ -9,6 +9,7 @@ from flask import render_template, Blueprint, url_for, \
     redirect, flash, request
 from flask.ext.login import login_user, logout_user, login_required, \
     current_user
+from sqlalchemy import exc
 
 from project.server import bcrypt, db
 from project.server.models import User, Student
@@ -33,11 +34,15 @@ def register():
             email=form.email.data,
             password=form.password.data
         )
-        db.session.add(user)
-        db.session.commit()
-        login_user(user)
-        flash('Thank you for registering.', 'success')
-        return redirect(url_for("main.home"))
+        try:
+            db.session.add(user)
+            db.session.commit()
+            login_user(user)
+            flash('Thank you for registering.', 'success')
+            return redirect(url_for("main.home"))
+        except exc.SQLAlchemyError:
+            flash('Something went wrong.', 'danger')
+            return redirect(url_for("main.home"))
 
     return render_template('user/register.html', form=form)
 
@@ -48,7 +53,8 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(
-                user.password, request.form['password']):
+                user.password, request.form['password']
+        ):
             login_user(user)
             flash('You are logged in. Welcome!', 'success')
             return redirect(url_for('main.home'))
@@ -73,7 +79,11 @@ def password():
     if form.validate_on_submit():
         user = User.query.filter_by(id=current_user.get_id()).first()
         user.password = bcrypt.generate_password_hash(form.password.data)
-        db.session.commit()
-        flash('Password Updated!', 'success')
-        return redirect(url_for('main.home'))
+        try:
+            db.session.commit()
+            flash('Password Updated!', 'success')
+            return redirect(url_for('main.home'))
+        except exc.SQLAlchemyError:
+            flash('Something went wrong.', 'danger')
+            return redirect(url_for('main.home'))
     return render_template('user/password.html', form=form)

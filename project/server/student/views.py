@@ -9,6 +9,7 @@ from functools import wraps
 from flask import render_template, Blueprint, request, flash, redirect, url_for
 from flask.ext.login import login_required
 from flask.ext.login import current_user
+from sqlalchemy import exc
 
 from project.server import db
 from project.server.student.forms import AddCourseForm
@@ -100,9 +101,13 @@ def add_course():
             course = get_single_course_name(form.courses.data)
             user = Student.query.filter_by(id=current_user.get_id()).first()
             course.students.append(user)
-            db.session.commit()
-            flash('Thank you for adding a new course.', 'success')
-            return redirect('/student/courses')
+            try:
+                db.session.commit()
+                flash('Thank you for adding a new course.', 'success')
+                return redirect('/student/courses')
+            except exc.SQLAlchemyError:
+                flash('Something went wrong.', 'danger')
+                return redirect('/student/courses')
         return render_template('/student/add.html', form=form)
     else:
         flash('No new courses at this time.', 'warning')

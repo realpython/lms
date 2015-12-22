@@ -8,6 +8,7 @@
 from functools import wraps
 from flask import render_template, Blueprint, request, flash, redirect, url_for
 from flask.ext.login import login_required, current_user
+from sqlalchemy import exc
 
 from project.server import db
 from project.server.models import Course
@@ -87,10 +88,14 @@ def add_course():
             end_date=form.end_date.data,
             teacher_id=current_user.get_id()
         )
-        db.session.add(new_course)
-        db.session.commit()
-        flash('Thank you for adding a new course.', 'success')
-        return redirect('/teacher/courses')
+        try:
+            db.session.add(new_course)
+            db.session.commit()
+            flash('Thank you for adding a new course.', 'success')
+            return redirect('/teacher/courses')
+        except exc.SQLAlchemyError:
+            flash('Something went wrong.', 'danger')
+            return redirect('/teacher/courses')
     return render_template('/teacher/add.html', form=form)
 
 
@@ -109,9 +114,13 @@ def update_course(course_id):
         update_course.subject = form.subject.data
         update_course.start_date = form.start_date.data
         update_course.end_date = form.end_date.data
-        db.session.commit()
-        flash('Course updated. Thank you', 'success')
-        return redirect('/teacher/course/{0}'.format(course_id))
+        try:
+            db.session.commit()
+            flash('Course updated. Thank you', 'success')
+            return redirect('/teacher/course/{0}'.format(course_id))
+        except exc.SQLAlchemyError:
+            flash('Something went wrong.', 'danger')
+            return redirect('/teacher/course/{0}'.format(course_id))
     return render_template(
         '/teacher/update.html',
         form=form,
