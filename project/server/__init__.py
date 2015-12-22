@@ -33,7 +33,7 @@ app.config.from_object(os.environ['APP_SETTINGS'])
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-password_hash = Bcrypt(app)
+bcrypt = Bcrypt(app)
 toolbar = DebugToolbarExtension(app)
 bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)

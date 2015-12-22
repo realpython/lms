@@ -3,7 +3,7 @@
 
 import datetime
 
-from project.server import db, password_hash
+from project.server import db, bcrypt
 
 
 course_student_association_table = db.Table(
@@ -64,7 +64,7 @@ class User(db.Model):
 
     def __init__(self, email, password):
         self.email = email
-        self.password = password_hash.generate_password_hash(password)
+        self.password = bcrypt.generate_password_hash(password)
         self.registered_on = datetime.datetime.now()
 
     def is_authenticated(self):
