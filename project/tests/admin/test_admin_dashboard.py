@@ -124,6 +124,7 @@ class TestAdminBlueprintDashboard(BaseTestCaseAdmin):
             self.assertIn(b'<th scope="row">1</th>', response.data)
             self.assertIn(b'<td>Music Appreciation</td>', response.data)
             self.assertIn(b'<td>teacher@teacher.com</td>', response.data)
+            self.assertIn(b'<td>True</td>', response.data)
             self.assertNotIn(b'<p>No courses!</p>', response.data)
             self.assertIn(b'<h2>Students', response.data)
             self.assertIn(b'<td>student@student.com</td>', response.data)

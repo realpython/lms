@@ -25,6 +25,7 @@
                 <th>Subject</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                <th>Active</th>
                 <th>Taught By</th>
                 <th>Students</th>
                 <th>Actions</th>
@@ -39,6 +40,7 @@
                     <td>{{ course.subject }}</td>
                     <td>{{ course.start_date.strftime('%Y-%m-%d') }}</td>
                     <td>{{ course.end_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ course.active }}</td>
                     <td>{{ course.teacher.email }}</td>
                     <td>
                       <ul>

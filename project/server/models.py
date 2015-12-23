@@ -24,6 +24,7 @@ class Course(db.Model):
     subject = db.Column(db.String(255), nullable=False)
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
+    active = db.Column(db.Boolean, nullable=False, default=True)
     teacher_id = db.Column(
         db.Integer, db.ForeignKey('teachers.id'), nullable=False
     )
@@ -55,6 +56,7 @@ class User(db.Model):
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     registered_on = db.Column(db.DateTime, nullable=False)
+    active = db.Column(db.Boolean, nullable=False, default=True)
     user_role = db.Column(db.String(15))
 
     __mapper_args__ = {
