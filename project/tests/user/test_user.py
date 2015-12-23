@@ -120,6 +120,25 @@ class TestUserBlueprint(BaseTestCaseAdmin):
             self.assertFalse(current_user.is_admin())
             self.assertEqual(response.status_code, 200)
 
+    def test_student_registration_unique_email(self):
+        # Ensure a student cannot register with a duplicate email.
+        with self.client:
+            response = self.client.post(
+                '/register',
+                data=dict(
+                    email='student@student.com',
+                    password='student',
+                    confirm='student'
+                ),
+                follow_redirects=True
+            )
+            self.assertIn(
+                b'Sorry. That email is already taken.',
+                response.data
+            )
+            self.assertTemplateUsed('user/register.html')
+            self.assertEqual(response.status_code, 200)
+
     def test_update_password(self):
         # Ensure update password behaves correctly.
         with self.client:

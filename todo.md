@@ -19,11 +19,8 @@
 
 1. Add ability to toggle student on/off. Controlled by admin.
 
-## Users
-
-1. Add unique validator to add student form
-
 ## Other
 
 1. Add assignments, quizes, and grades. Controlled by teachers and admin.
 1. DRY the APIs (one central API?, refactor into proper REST structure?)
+1. Toggle course inactive on end date.
