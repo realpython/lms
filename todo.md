@@ -7,17 +7,11 @@
 1. Add coveralls / code coverage
 1. Better error handling
 
-## Courses
+## Admin
 
-1. Add ability to toggle course on/off. Controlled by admin.
-
-## Teachers
-
-1. Add ability to toggle teacher on/off. Controlled by admin.
-
-## Students
-
-1. Add ability to toggle student on/off. Controlled by admin.
+1. Add ability to toggle course on/off.
+1. Add ability to toggle teacher on/off.
+1. Add ability to toggle student on/off.
 
 ## Other
 
